@@ -19,7 +19,7 @@ var HelloScene = cc.Scene.extend({
     },
     update:function(dt){
         this.duration += dt;
-        if(this.duration>0.5){
+        if(this.duration>0.5 && Box._letterCount<26){
             this.createBox();
             this.duration = 0;
         }
@@ -37,9 +37,14 @@ var HelloScene = cc.Scene.extend({
         this._boxList.push(bo);
     },
     allBoxDrop:function(dt){
-        this._boxList.forEach(function(bo,i){
+        this._boxList.forEach(function(bo,i,list){
             var dist = dt * bo.speed;
             bo.move(dist);
+
+            if(bo.y<=-bo.height/2){
+                bo.destroy();
+                list.splice(i,1);
+            }
         });
     }
 
