@@ -5,6 +5,7 @@
     "renderMode"    : 1,
     "jsList"        : [
         "src/res.js",
-        "src/helloScene.js"
+        "src/helloScene.js",
+        "src/box.js"
     ]
 }
