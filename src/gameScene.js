@@ -37,6 +37,11 @@ var GameScene = cc.Scene.extend({
                 txt.y = s.height/2;
                 txt.rotation= -45;
                 s.addChild(txt);
+
+
+
+
+
                 
                 return s;
             },
@@ -46,6 +51,11 @@ var GameScene = cc.Scene.extend({
                 s.height = CONFIG.BIGBOX_SIZE;
                 var txt = new cc.LabelTTF('Tax','',18);
                 txt.color = cc.color(0,0,0);
+
+                
+
+
+
 
                 txt.x = s.width/2;
                 txt.y = s.height/2;

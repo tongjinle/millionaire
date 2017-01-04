@@ -6,6 +6,9 @@
     "jsList"        : [
         "src/res.js",
         "src/helloScene.js",
-        "src/box.js"
+        "src/box.js",
+        "src/gameScene.js",
+        "src/mapData.js",
+        "src/config.js"
     ]
 }
