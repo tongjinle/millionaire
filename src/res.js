@@ -2,7 +2,8 @@
 var RES_PATH = "res/";
 var RES= [
     //image
-    'helloWorld.png'
+    'helloWorld.png',
+    'xwz.jpg'
 
     //plist
 
