@@ -71,13 +71,51 @@ var GameScene = cc.Scene.extend({
                 
                 return s;
             },
+            'jail':function(data){
+                var s = new cc.Sprite();
+                s.width = CONFIG.BIGBOX_SIZE;
+                s.height = CONFIG.BIGBOX_SIZE;
+                var txt = new cc.LabelTTF('jail','',16);
+                txt.color = cc.color(0,0,0);
+                txt.x = s.width/2;
+                txt.y = s.height/2;
+                txt.rotation= 45;
+                s.addChild(txt);
+                
+                return s;
+            },
+            'hotel':function(data){
+                var s = new cc.Sprite();
+                s.width = CONFIG.BIGBOX_SIZE;
+                s.height = CONFIG.BIGBOX_SIZE;
+                var txt = new cc.LabelTTF('hotel','',16);
+                txt.color = cc.color(0,0,0);
+                txt.x = s.width/2;
+                txt.y = s.height/2;
+                txt.rotation= 135;
+                s.addChild(txt);
+                
+                return s;
+            },
+            'Hospital':function(data){
+                var s = new cc.Sprite();
+                s.width = CONFIG.BIGBOX_SIZE;
+                s.height = CONFIG.BIGBOX_SIZE;
+                var txt = new cc.LabelTTF('Hospital','',16);
+                txt.color = cc.color(0,0,0);
+                txt.x = s.width/2;
+                txt.y = s.height/2;
+                txt.rotation= 225;
+                s.addChild(txt);
+                
+                return s;
+            },
             'tax':function(data){
                 var s = new cc.Sprite();
                 s.width = CONFIG.SMALLBOX_SIZE;
                 s.height = CONFIG.BIGBOX_SIZE;
                 var txt = new cc.LabelTTF('Tax','',18);
                 txt.color = cc.color(0,0,0);
-
                 txt.x = s.width/2;
                 txt.y = s.height/2;
                 s.addChild(txt);
@@ -89,7 +127,7 @@ var GameScene = cc.Scene.extend({
                 var s = new cc.Sprite();
                 s.width = CONFIG.SMALLBOX_SIZE;
                 s.height = CONFIG.BIGBOX_SIZE;
-                var txt = new cc.LabelTTF(''+data.name+'','',18);
+                var txt = new cc.LabelTTF(''+data.cityname+'','',18);
                 txt.color = cc.color(0,0,0);
 
                 txt.x = s.width/2;
@@ -104,6 +142,19 @@ var GameScene = cc.Scene.extend({
                 s.width = CONFIG.SMALLBOX_SIZE;
                 s.height = CONFIG.BIGBOX_SIZE;
                 var txt = new cc.LabelTTF('chance','',18);
+                txt.color = cc.color(0,0,0);
+
+                txt.x = s.width/2;
+                txt.y = s.height/2;
+                s.addChild(txt);
+                // todo
+                return s;
+            },
+            'train':function(data){
+                var s = new cc.Sprite();
+                s.width = CONFIG.SMALLBOX_SIZE;
+                s.height = CONFIG.BIGBOX_SIZE;
+                var txt = new cc.LabelTTF('train','',18);
                 txt.color = cc.color(0,0,0);
 
                 txt.x = s.width/2;

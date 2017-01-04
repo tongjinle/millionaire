@@ -5,8 +5,9 @@
 	{
 		type:'ground',
 		price:50,
-		name:'上海',
-		groupName:'1'
+		name:'shanghai',
+		cityname:'上海',
+		group:'100'
 	},
 	{
 		type:'tax',
@@ -15,26 +16,30 @@
 	{
 		type:'ground',
 		price:100,
-		name:'苏州',
-		groupName:'1'
+		name:'suzhou',
+		cityname:'苏州',
+		group:'100'
 	},
     {
 		type:'ground',
 		price:80,
-		name:'杭州',
-		groupName:'1'
+		name:'hangzhou',
+		cityname:'杭州',
+		group:'100'
     },
 		{
-			type:'ground',
-			price:70,
-			name:'无锡',
-			groupName:'1'
+			type:'train',
+			price:50,
+			name:'xinganxian',
+			trainname:'新干线',
+			group:'trainGroup'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'广州',
-			groupName:'2'
+			name:'guangzhou',
+			cityname:'广州',
+			group:'200'
 		},
 		{
 			type:'chance'
@@ -42,23 +47,26 @@
 		{
 			type:'ground',
 			price:70,
-			name:'潮州',
-			groupName:'2'
+			name:'chaozhou',
+			cityname:'潮州',
+			group:'200'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'东莞',
-			groupName:'2'
+			name:'dongguan',
+			cityname:'东莞',
+			group:'200'
 		},
 		{
-			type:'startPoint'
+			type:'jail'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'南宁',
-			groupName:'3'
+			name:'nannin',
+			cityname:'南宁',
+			group:'300'
 		},
 		{
 		type:'tax',
@@ -67,26 +75,30 @@
 	    {
 			type:'ground',
 			price:70,
-			name:'百色',
-			groupName:'3'
+			name:'baise',
+			cityname:'百色',
+			group:'300'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'北海',
-			groupName:'3'
+			name:'beihai',
+			cityname:'北海',
+			group:'300'
+		},
+		{
+			type:'train',
+			price:50,
+			name:'hexiehao',
+			trainname:'和谐号',
+			group:'trainGroup'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'崇左',
-			groupName:'3'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'兰州',
-			groupName:'4'
+			name:'lanzhou',
+			cityname:'兰州',
+			group:'400'
 		},
 		{
 			type:'chance'
@@ -94,23 +106,26 @@
 		{
 			type:'ground',
 			price:70,
-			name:'白银',
-			groupName:'4'
+			name:'baiying',
+			cityname:'白银',
+			group:'400'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'定西',
-			groupName:'4'
+			name:'dingxi',
+			cityname:'定西',
+			group:'400'
 		},
 		{
-			type:'startPoint'
+			type:'hotel'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'海口',
-			groupName:'5'
+			name:'haikou',
+			cityname:'海口',
+			group:'500'
 		},
 		{
 		type:'tax',
@@ -119,26 +134,31 @@
 	    {
 			type:'ground',
 			price:70,
-			name:'白沙',
-			groupName:'5'
+			name:'baisha',
+			cityname:'白沙',
+			group:'500'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'保亭',
-			groupName:'5'
+			name:'baoting',
+			cityname:'保亭',
+			group:'500'
+		},
+		{
+			type:'train',
+			price:50,
+			name:'xiwanghao',
+			trainname:'希望号',
+			group:'trainGroup'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'昌江',
-			groupName:'5'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'郑州',
-			groupName:'6'
+			name:'zhengzhou',
+			cityname:'郑州',
+			group:'600'
+
 		},
 		{
 			type:'chance'
@@ -146,23 +166,26 @@
 		{
 			type:'ground',
 			price:70,
-			name:'安阳',
-			groupName:'6'
+			name:'anyang',
+			cityname:'安阳',
+			group:'600'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'鹤壁',
-			groupName:'6'
+			name:'hebi',
+			cityname:'鹤壁',
+			group:'600'
 		},
 		{
-			type:'startPoint'
+			type:'Hospital'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'鹤岗',
-			groupName:'7'
+			name:'hegang',
+			cityname:'鹤岗',
+			group:'700'
 		},
 		{
 		type:'tax',
@@ -171,26 +194,30 @@
 	    {
 			type:'ground',
 			price:70,
-			name:'黑河',
-			groupName:'7'
+			name:'heihe',
+			cityname:'黑河',
+			group:'700'
 		},
 	    {
 			type:'ground',
 			price:70,
-			name:'鸡西',
-			groupName:'7'
+			name:'jixi',
+			cityname:'鸡西',
+			group:'700'
+		},
+		{
+			type:'train',
+			price:50,
+			name:'dongjingxian',
+			trainname:'东京线',
+			group:'trainGroup'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'牡丹江',
-			groupName:'7'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'台北',
-			groupName:'8'
+			name:'taibei',
+			cityname:'台北',
+			group:'800'
 		},
 		{
 			type:'chance'
@@ -198,14 +225,16 @@
 		{
 			type:'ground',
 			price:70,
-			name:'高雄',
-			groupName:'8'
+			name:'gaoxiong',
+			cityname:'高雄',
+			group:'800'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'台中',
-			groupName:'8'
+			name:'taizhong',
+			cityname:'台中',
+			group:'800'
 		},
 	];
 
