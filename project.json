@@ -4,6 +4,9 @@
     "id"            : "gameCanvas",
     "renderMode"    : 1,
     "jsList"        : [
+        "src/gameScene.js",
+        "src/mapData.js",
+        "src/config.js",
         "src/res.js",
         "src/helloScene.js",
         "src/box.js"
