@@ -20,5 +20,8 @@
   "devDependencies": {
     "browser-sync": "^2.18.5",
     "gulp": "^3.9.1"
+  },
+  "dependencies": {
+    "underscore": "^1.8.3"
   }
 }
