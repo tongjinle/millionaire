@@ -9,6 +9,10 @@ var GameScene = cc.Scene.extend({
             x:cc.winSize.width-CONFIG.BIGBOX_SIZE/2,
             y:CONFIG.BIGBOX_SIZE/2
         }
+        var posit={
+            x:cc.winSize.width-CONFIG.BIGBOX_SIZE/2,
+            y:cc.winSize.height-CONFIG.BIGBOX_SIZE/2
+        }
         data.forEach(function(d,i){
             var s = this.createBox(d);
             var row = Math.floor(i/10);
@@ -23,6 +27,33 @@ var GameScene = cc.Scene.extend({
             if(row ==0 ){
                 posi.x -=step;
             }
+            if(i%10==1){
+                // big
+                step = CONFIG.BIGBOX_SIZE/2 + CONFIG.SMALLBOX_SIZE/2;
+            }else{
+                step = CONFIG.SMALLBOX_SIZE;    
+            }
+            if(row ==1 ){
+                posi.y +=step;
+            }
+            if(i%10==2){
+                // big
+                step = CONFIG.BIGBOX_SIZE/2 + CONFIG.SMALLBOX_SIZE/2;
+            }else{
+                step = CONFIG.SMALLBOX_SIZE;    
+            }
+            if(row ==2 ){
+                posi.x +=step;
+            }
+            if(i%10==3){
+                // big
+                step = CONFIG.BIGBOX_SIZE/2 + CONFIG.SMALLBOX_SIZE/2;
+            }else{
+                step = CONFIG.SMALLBOX_SIZE;    
+            }
+            if(row ==3 ){
+                posi.y -=step;
+            }
         }.bind(this));
     },
     createBox:function(boxData){
@@ -31,11 +62,50 @@ var GameScene = cc.Scene.extend({
                 var s = new cc.Sprite();
                 s.width = CONFIG.BIGBOX_SIZE;
                 s.height = CONFIG.BIGBOX_SIZE;
-                var txt = new cc.LabelTTF('Start Point','',28);
+                var txt = new cc.LabelTTF('Start Point','',16);
                 txt.color = cc.color(0,0,0);
                 txt.x = s.width/2;
                 txt.y = s.height/2;
                 txt.rotation= -45;
+                s.addChild(txt);
+                
+                return s;
+            },
+            'jail':function(data){
+                var s = new cc.Sprite();
+                s.width = CONFIG.BIGBOX_SIZE;
+                s.height = CONFIG.BIGBOX_SIZE;
+                var txt = new cc.LabelTTF('jail','',16);
+                txt.color = cc.color(0,0,0);
+                txt.x = s.width/2;
+                txt.y = s.height/2;
+                txt.rotation= 45;
+                s.addChild(txt);
+                
+                return s;
+            },
+            'hotel':function(data){
+                var s = new cc.Sprite();
+                s.width = CONFIG.BIGBOX_SIZE;
+                s.height = CONFIG.BIGBOX_SIZE;
+                var txt = new cc.LabelTTF('hotel','',16);
+                txt.color = cc.color(0,0,0);
+                txt.x = s.width/2;
+                txt.y = s.height/2;
+                txt.rotation= 135;
+                s.addChild(txt);
+                
+                return s;
+            },
+            'Hospital':function(data){
+                var s = new cc.Sprite();
+                s.width = CONFIG.BIGBOX_SIZE;
+                s.height = CONFIG.BIGBOX_SIZE;
+                var txt = new cc.LabelTTF('Hospital','',16);
+                txt.color = cc.color(0,0,0);
+                txt.x = s.width/2;
+                txt.y = s.height/2;
+                txt.rotation= 225;
                 s.addChild(txt);
                 
                 return s;
@@ -46,7 +116,6 @@ var GameScene = cc.Scene.extend({
                 s.height = CONFIG.BIGBOX_SIZE;
                 var txt = new cc.LabelTTF('Tax','',18);
                 txt.color = cc.color(0,0,0);
-
                 txt.x = s.width/2;
                 txt.y = s.height/2;
                 s.addChild(txt);
@@ -54,10 +123,11 @@ var GameScene = cc.Scene.extend({
                 return s;
             },
             'ground':function(data){
+
                 var s = new cc.Sprite();
                 s.width = CONFIG.SMALLBOX_SIZE;
                 s.height = CONFIG.BIGBOX_SIZE;
-                var txt = new cc.LabelTTF('Ground','',18);
+                var txt = new cc.LabelTTF(''+data.cityname+'','',18);
                 txt.color = cc.color(0,0,0);
 
                 txt.x = s.width/2;
@@ -65,7 +135,34 @@ var GameScene = cc.Scene.extend({
                 s.addChild(txt);
                 // todo
                 return s;
-            }
+
+            },
+            'chance':function(data){
+                var s = new cc.Sprite();
+                s.width = CONFIG.SMALLBOX_SIZE;
+                s.height = CONFIG.BIGBOX_SIZE;
+                var txt = new cc.LabelTTF('chance','',18);
+                txt.color = cc.color(0,0,0);
+
+                txt.x = s.width/2;
+                txt.y = s.height/2;
+                s.addChild(txt);
+                // todo
+                return s;
+            },
+            'train':function(data){
+                var s = new cc.Sprite();
+                s.width = CONFIG.SMALLBOX_SIZE;
+                s.height = CONFIG.BIGBOX_SIZE;
+                var txt = new cc.LabelTTF('train','',18);
+                txt.color = cc.color(0,0,0);
+
+                txt.x = s.width/2;
+                txt.y = s.height/2;
+                s.addChild(txt);
+                // todo
+                return s;
+            },
         };
 
         var s = dict[boxData.type].bind(this)(boxData);
