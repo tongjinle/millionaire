@@ -20,6 +20,7 @@
                 while(1){
                     compName = computerNameList[Math.floor(Math.random()*computerNameList.length)];
                     if(compList.indexOf(compName)==-1){
+                        compList.push(compName);
                         break;
                     }
                 }

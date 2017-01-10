@@ -15,12 +15,16 @@ var Dice = cc.Sprite.extend({
                 if (!cc.rectIntersectsRect(this.boundingBox(), cc.rect(event.getLocationX(), event.getLocationY(), 1, 1))) {
                     return;
                 }
-                var diceNum = getLogic().getDiceNum();
-                this.ani(diceNum, function() {
-                    this.parent.accept('diceNum', diceNum);
-                }.bind(this));
+                this.act();
+
             }.bind(this)
         }, this);
+    },
+    act: function() {
+        var diceNum = getLogic().getDiceNum();
+        this.ani(diceNum, function() {
+            this.parent.accept('diceNum', diceNum);
+        }.bind(this));
     },
     ani: function(diceNum, next) {
         this.canDice = false;

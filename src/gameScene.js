@@ -29,6 +29,9 @@ var GameScene = cc.Scene.extend({
             });
             this.move(ch, data);
             us.index = (us.index + data) % mapData.length;
+
+            // release action right
+            this.round();
         };
 
         dict[eventName].bind(this)(data);
@@ -45,7 +48,13 @@ var GameScene = cc.Scene.extend({
         }
     },
     AI: function(user) {
-        
+        console.log('AI:'+user.name+'\'s round ...');
+        var interval = [1000,2500];
+        var delay = Math.floor(Math.random()*(interval[1]-interval[0]))+interval[0];
+        setTimeout(function(){
+            this.dice.act();
+            
+        }.bind(this),delay);
     },
     setChessPosition: function(ch, index) {
         ch.index = index;
@@ -53,7 +62,7 @@ var GameScene = cc.Scene.extend({
     },
     initLogic: function() {
         var lg = this.lg = getLogic();
-        lg.createUserList('sunxiaomei', 2);
+        lg.createUserList('sunxiaomei', 3);
     },
     createGameMap: function(mapData, mapColorData) {
         var data = mapData;
