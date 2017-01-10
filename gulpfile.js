@@ -9,7 +9,7 @@ gulp.task('serve', function() {
         server: "./"
     });
 
-    gulp.watch("src/**/*.js").on('change', browserSync.reload);
+    gulp.watch(["src/**/*.js","project.json"]).on('change', browserSync.reload);
 });
 
 gulp.task('default', ['serve']);

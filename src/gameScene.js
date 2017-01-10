@@ -38,23 +38,47 @@ var GameScene = cc.Scene.extend({
     },
     // 确定当前玩家
     round: function() {
-        var username = this.lg.round();
-        var us = this.currUser = this.lg.findUser(username);
-        if (us.role == UserRole.human) {
-            this.dice.canDice = true;
-        } else {
-            this.dice.canDice = false;
-            this.AI(us);
+        var lg = this.lg;
+        lg.round();
+        var username = lg.currUser.name;
+        var actionList = lg.currActionList;
+
+        this.parseActionList(actionList);
+
+
+    },
+    parseActionList: function(actionList) {
+        var dict = {};
+        var us = this.currUser = this.lg.findUser(this.lg.currUser.name);
+        if(us.role == UserRole.com){
+            this.AI();
+            return;
         }
+
+        this.dice.canDice = false;
+        // 可以dice
+        dict[UserAction.dice] = function() {
+            this.dice.canDice = true;
+        };
+
+        // 可以buy
+        dict[UserAction.buy] = function(){
+            console.log('can buy ...');
+        };
+
+        actionList.forEach(function(act) {
+            dict[act].bind(this)();
+        }.bind(this));
     },
     AI: function(user) {
-        console.log('AI:'+user.name+'\'s round ...');
-        var interval = [1000,2500];
-        var delay = Math.floor(Math.random()*(interval[1]-interval[0]))+interval[0];
-        setTimeout(function(){
+        var user = this.lg.currUser;
+        console.log('AI:' + user.name + '\'s round ...');
+        var interval = [1000, 2500];
+        var delay = Math.floor(Math.random() * (interval[1] - interval[0])) + interval[0];
+        setTimeout(function() {
             this.dice.act();
-            
-        }.bind(this),delay);
+
+        }.bind(this), delay);
     },
     setChessPosition: function(ch, index) {
         ch.index = index;

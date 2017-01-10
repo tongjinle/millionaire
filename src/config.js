@@ -9,5 +9,11 @@ var CONFIG={
 
 
     // 玩家初始money
-    USER_MONEY:10000
+    USER_MONEY:10000,
+
+
+
+
+    // ground
+    GROUND_MAX_LEVEL:4
 };
