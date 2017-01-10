@@ -9,9 +9,9 @@
 
     // 加入玩家
     handler.createUserList = function(humanName,num){
+        var compList = [];
         for(var i=0;i<num;i++){
             var us;
-            var compList = [];
             if(i==0){
                 us = new User(humanName,UserRole.human);
             }else{
