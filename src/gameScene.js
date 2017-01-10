@@ -1,37 +1,52 @@
 var GameScene = cc.Scene.extend({
+    index:0,
+    diceNum:0,
+    chess:null,
+    posiDict:null,
+    
     ctor:function(){
         this._super();
-        this.createGameMap();
-        this.createChance();  
+        this.lg = getLogic();
+        this.posiDict = {};
+        this.createGameMap(mapData,mapColorData);
         this.createDice();
+        // this.createChance();  
+        // this.createground();
+        // this.chess=new Chess();
+        // this.setChessPosition();
+        // this.addChild(this.chess);
     },
-    createGameMap:function(){
+    setChessPosition:function(ch,index){
+        ch.index = index;
+        ch.setPosition(this.posiDict[index]);
+    },
+    createGameMap:function(mapData,mapColorData){
         var data = mapData;
+        // 起点为右下角
+        // 四个角为大格子，其余都为小格子
         var posi = {
             x:cc.winSize.width-CONFIG.BIGBOX_SIZE/2,
             y:CONFIG.BIGBOX_SIZE/2
-        }
+        };
         data.forEach(function(d,i){
+            // 创建box的工厂
             var s = this.createBox(d);
+            // 第几行,顺时针,bottom为第0行
             var row = Math.floor(i/10);
             var step; 
-            if(i%10==0){
-                // big
+            // 处理转角
+            if(i%10==0 || i%10 ==9){
+                // bigbox
                 step = CONFIG.BIGBOX_SIZE/2 + CONFIG.SMALLBOX_SIZE/2;
             }else{
                 step = CONFIG.SMALLBOX_SIZE;    
             }
-
-            if(i==10){
-                posi.x-=(CONFIG.BIGBOX_SIZE/2-CONFIG.SMALLBOX_SIZE/2);
-                window.ddd = s;
-                console.log(ddd.getPosition(),posi);
-            }else if (i==20){
-                posi.y+=(CONFIG.BIGBOX_SIZE/2-CONFIG.SMALLBOX_SIZE/2);
-            }else if(i==30){
-                posi.x+=(CONFIG.BIGBOX_SIZE/2-CONFIG.SMALLBOX_SIZE/2);
-            }
             s.setPosition(posi);
+            
+            // 缓存格子下标跟具体position的映射关系
+            this.posiDict [i] = {x:posi.x,y:posi.y};
+
+            // 处理下一个格子的位置
             if(row ==0 ){
                 console.log(posi,'**');
                 posi.x -=step;
@@ -49,21 +64,21 @@ var GameScene = cc.Scene.extend({
                 posi.y -=step;
             }
         }.bind(this));
+
     },
     createBox:function(boxData){
+
         var dict = {
             'startPoint':function(data){
                 var s = new cc.Sprite();
                 var s1=new cc.Sprite.create("start.jpg");
-                var CHESS=new Chess();
+                
                 s1.setScale(0.3);
                 s.width = CONFIG.BIGBOX_SIZE;
                 s.height = CONFIG.BIGBOX_SIZE;
                 s1.x = s.width/2;
                 s1.y = s.height/2;
-                CHESS.x = s.width*3;
-                CHESS.y = s.height*2;
-                s1.addChild(CHESS);
+
                 s.addChild(s1);
 
                 
@@ -114,7 +129,7 @@ var GameScene = cc.Scene.extend({
 
                 var s1=new cc.Sprite.create("coin.png");
                 var s2=new cc.Sprite.create();
-                var CHESS=new Chess();
+                var chess=new Chess();
                 s1.setScaleX(0.05);
                 s1.setScaleY(0.05);
                 s2.setScaleX(0.32);
@@ -243,6 +258,7 @@ var GameScene = cc.Scene.extend({
         };
 
         var s = dict[boxData.type].bind(this)(boxData);
+
         this.addChild(s);
         return s;
     },
@@ -292,36 +308,86 @@ var GameScene = cc.Scene.extend({
                 return chance;
     },
     createDice:function(){
-                var dice = new cc.Sprite();
-                var s1=new cc.Sprite.create("dicebg.jpg");
-                s1.setScale(0.45);
-                s1.x = 550;
-                s1.y = 400;
-                dice.addChild(s1);
-                this.addChild(dice);
+        var dice = this.dice = new Dice();
+        dice.x= 550;
+        dice.y = 400;
+        this.addChild(dice);
+    },
+    createground:function(){
+
+            var ground = new cc.Sprite();
+            this.addChild(ground);
+
+            var self=this;
+            cc.eventManager.addListener({
+                event:cc.EventListener.MOUSE,
+                onMouseDown:function(event){
+                    var pos=event.getLocation();
+
+                    if(self.checkChancePos(pos)){
+
+                        var groundBox = new cc.Sprite();
+                        groundBox.x=250;
+                        groundBox.y=300;
+                        var dn = new cc.DrawNode();
+                        var ltp = cc.p(0,200 );
+                        var rbp = cc.p(300, 0);
+                        dn.drawRect(ltp, rbp, cc.color(0,0,0,150));
+                        groundBox.addChild(dn);
+                        var txt = new cc.LabelTTF('请选择以下操作：','',18);
+                        txt.color = cc.color(255,255,255);
+                        txt.x = 150;
+                        txt.y = 150;
+                        dn.addChild(txt);
+
+                        var dnl = new cc.DrawNode();
+                        var ltpl = cc.p(0,30 );
+                        var rbpl = cc.p(50, 0);
+                        dnl.x=50;
+                        dnl.y=50;
+                        dnl.drawRect(ltpl, rbpl, cc.color(5,85,152,200));
+                        dn.addChild(dnl);
+                        var txtl = new cc.LabelTTF('购买','',15);
+                        txtl.color = cc.color(255,255,255);
+                        txtl.x =25;
+                        txtl.y =15;
+                        dnl.addChild(txtl);
+
+                        var dnc = new cc.DrawNode();
+                        var ltpc = cc.p(0,30 );
+                        var rbpc = cc.p(50, 0);
+                        dnc.x=125;
+                        dnc.y=50;
+                        dnc.drawRect(ltpc, rbpc, cc.color(200,20,20,200));
+                        dn.addChild(dnc);
+                        var txtc = new cc.LabelTTF('升级','',15);
+                        txtc.color = cc.color(255,255,255);
+                        txtc.x =25;
+                        txtc.y =15;
+                        dnc.addChild(txtc);
+
+                        var dnr = new cc.DrawNode();
+                        var ltpr = cc.p(0,30 );
+                        var rbpr = cc.p(50, 0);
+                        dnr.x=200;
+                        dnr.y=50;
+                        dnr.drawRect(ltpr, rbpr, cc.color(40,220,103,200));
+                        dn.addChild(dnr);
+                        var txtr = new cc.LabelTTF('放弃','',15);
+                        txtr.color = cc.color(255,255,255);
+                        txtr.x =25;
+                        txtr.y =15;
+                        dnr.addChild(txtr);
+
+                        self.addChild(groundBox);
 
 
-                var self=this;
-                cc.eventManager.addListener({
-                    event:cc.EventListener.MOUSE,
-                    onMouseDown:function(event){
-                        var pos=event.getLocation();
-
-                        if(self.checkPos(pos)){
-                            self.schedule(function(){
-                            var n=Math.ceil(Math.random()*6);
-                            console.log(n);
-                            s1=new cc.Sprite.create("dice"+n+".jpg"); 
-                            s1.setScale(0.6);
-
-                            s1.x = 550;
-                            s1.y = 400;
-                            dice.addChild(s1);
-                            },0.05,10,0);
-                        }
                     }
-                },this);
-                return dice;
+                }
+            },this);
+
+
+            return ground;
     },
     checkPos:function(pos) {
         return ((pos.x>=480&&pos.x<=600)&&
@@ -334,6 +400,30 @@ var GameScene = cc.Scene.extend({
             (pos.x>=CONFIG.BIGBOX_SIZE+CONFIG.SMALLBOX_SIZE*6&&pos.x<=CONFIG.BIGBOX_SIZE+CONFIG.SMALLBOX_SIZE*7)&&(pos.y>=CONFIG.BIGBOX_SIZE+CONFIG.SMALLBOX_SIZE*9&&pos.y<=CONFIG.BIGBOX_SIZE*2+CONFIG.SMALLBOX_SIZE*9)||
             (pos.x>=CONFIG.BIGBOX_SIZE+CONFIG.SMALLBOX_SIZE*9)&&(pos.y>=CONFIG.BIGBOX_SIZE+CONFIG.SMALLBOX_SIZE*2&&pos.y<=CONFIG.BIGBOX_SIZE+CONFIG.SMALLBOX_SIZE*3)
         )
+    },
+    move:function(n){
+
+        
+        // console.log(this.index);
+        var posiList = [];
+        for(var i= 0;i<n;i++){
+            var index= (this.index+i+1)%40;
+            posiList.push(this.posiDict[index]);
+        }
+        var moveActList= posiList.map(function(posi){
+            return cc.moveTo(0.2,cc.p(posi));
+            
+        });
+        console.log(posiList);
+        this.chess.runAction(cc.sequence(moveActList));
+
+        this.index= (this.index+ n)%40;
+        return;
+        index.push(this.index);
+        console.log(index);
+
+
+
     }
 
 });

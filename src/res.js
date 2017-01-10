@@ -3,10 +3,9 @@ var RES_PATH = "res/";
 var RES= [
     //image
     'helloWorld.png',
-    'xwz.jpg',
     'head.png',
     'start.jpg',
-    'jail.jpg',
+    'jail.jpeg',
     "dice1.jpg",
     "dice2.jpg",
     "dice3.jpg",
