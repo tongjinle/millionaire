@@ -7,7 +7,7 @@
 
         this.currUser = null;
 
-        this.createBoxList();
+        this.createBoxList(mapData);
     };
 
     var handler = cls.prototype;
@@ -36,9 +36,55 @@
     };
 
     // 生成格子
-    handler.createBoxList = function(){
-        // todo
+    handler.createBoxList = function(mapData){
+        var map = mapData;
+        map.forEach(function(data, i) {
+            var box = this._createBox(data);
+            this.boxList.push(box);
+        }.bind(this));
     };
+
+    handler._createBox = function(data) {
+        var dict = {
+            'ground': function(data) {
+                var name = data.name;
+                var price = data.price;
+                var group = data.group;
+                var box = new Ground(name, price, group);
+                return box;
+            },
+            'tax':function(data){
+                var box = new Tax();
+                return box;
+            },
+            'startPoint':function(data){
+                var box = new StartPoint();
+                return box;
+            },
+            'jail':function(data){
+                var box = new Jail();
+                return box;
+            },
+            'train':function(data){
+                var box = new Train();
+                return box;
+            },
+            'hotel':function(data){
+                var box = new Hotel();
+                return box;
+            },
+            'hospital':function(data){
+                var box = new Hospital();
+                return box;
+            },
+            'chance':function(){
+                var box = new Chance();
+                return box;
+            }
+        };
+        var box =  dict[data.type](data);
+        return box;
+    }.bind(this);
 
     handler.findUser = function(username) {
         return this.userList.find(function(us) {
@@ -62,7 +108,7 @@
     // 获取当前玩家可行动作
     handler.getActionList = function() {
         var list = [];
-        // dice
+        var us = this.currUser;
         list.push(UserAction.dice);
 
         return list;

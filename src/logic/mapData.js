@@ -179,7 +179,7 @@
 			group:'600'
 		},
 		{
-			type:'Hospital'
+			type:'hospital'
 		},
 		{
 			type:'ground',

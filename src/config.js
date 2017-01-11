@@ -15,5 +15,9 @@ var CONFIG={
 
 
     // ground
-    GROUND_MAX_LEVEL:4
+    GROUND_MAX_LEVEL:4,
+
+
+    // startPoint的奖励
+    STARTPOINT_REWARD:2000
 };

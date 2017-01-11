@@ -27,4 +27,4 @@
     };
 
     this.Ground = cls;
-});
+}).call(this);

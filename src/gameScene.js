@@ -195,7 +195,7 @@ var GameScene = cc.Scene.extend({
                 s.addChild(s1);
                 return s;
             },
-            'Hospital': function(data) {
+            'hospital': function(data) {
                 var s = new cc.Sprite();
                 s.width = CONFIG.BIGBOX_SIZE;
                 s.height = CONFIG.BIGBOX_SIZE;
