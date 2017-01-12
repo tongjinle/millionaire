@@ -21,10 +21,7 @@ var Dice = cc.Sprite.extend({
         }, this);
     },
     act: function() {
-        var diceNum = getLogic().getDiceNum();
-        this.ani(diceNum, function() {
-            this.parent.accept('diceNum', diceNum);
-        }.bind(this));
+        var rst = this.parent.accept('diceNum');
     },
     ani: function(diceNum, next) {
         this.canDice = false;
@@ -35,7 +32,6 @@ var Dice = cc.Sprite.extend({
             var rnd = Math.ceil(Math.random() * 6);
             this.texture = 'dice' + rnd + '.jpg';
             count++;
-            window.aaaa = count;
             if (count == repeatCount + 1) {
                 this.texture = 'dice' + diceNum + '.jpg';
                 next && next();

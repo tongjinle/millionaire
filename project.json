@@ -4,14 +4,18 @@
     "id"            : "gameCanvas",
     "renderMode"    : 1,
     "jsList"        : [
+        "node_modules/async/dist/async.js",
+
         "src/gameScene.js",
         "src/config.js",
         "src/res.js",
         "src/logic/mapData.js",
         "src/logic/logic.js",
+        "src/menu.js",
         "src/logic/user.js",
         "src/logic/userRole.js",
         "src/logic/userAction.js",
+        "src/logic/userStatus.js",
             
         "src/logic/boxes/boxType.js",
         "src/logic/boxes/startPoint.js",
@@ -28,5 +32,6 @@
         "src/config.js",
         "src/chess.js",
         "src/chanceBox.js"
+
     ]
 }

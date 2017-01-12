@@ -1,5 +1,7 @@
 (function(){
     var cls = function(name,price,group){
+        this.type = BoxType.ground;
+        
         this.name = name;
         this.price = price;
         this.group = group;

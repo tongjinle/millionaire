@@ -96,12 +96,14 @@
     handler.round = function() {
         this.userIndex = (this.userIndex + 1) % this.userList.length;
         this.currUser = this.userList[this.userIndex];
+        this.currUser.status = UserStatus.beforeDice;
         this.currActionList = this.getActionList();
     };
 
 
     // 获取随机点数
     handler.getDiceNum = function() {
+        return 4;
         return Math.ceil(Math.random() * 6);
     };
 
@@ -109,17 +111,41 @@
     handler.getActionList = function() {
         var list = [];
         var us = this.currUser;
-        list.push(UserAction.dice);
+
+        if(us.status == UserStatus.beforeDice){
+            list.push(UserAction.dice);
+        }else if(us.status == UserStatus.afterStatus){
+            // buy
+            // 是不是ground
+            // 是否ground有owner
+            // user的money够不够
+            var box = this.boxList[us.index];
+            if (BoxType.ground == box.type && !box.owner && us.money >= box.price) {
+                list.push(UserAction.buy);
+            }
+            
+        }
 
         return list;
-        // buy
-        // 是不是ground
-        // 是否ground有owner
-        // user的money够不够
-        var box = this.boxList[this.currUser.index];
-        if (BoxType.ground == box.type && !box.owner && this.currUser.money >= box.price) {
-            list.push(UserAction.buy);
+    };
+
+    // 执行一个方法
+    handler.act = function(actName,data){
+        var us = this.currUser;
+        var rst;
+        if(actName == UserAction.dice){
+            rst = {diceNum:this.getDiceNum()};
+            us.status = UserStatus.afterStatus;
+        }else if(actName == UserAction.buy){
+            let box = this.boxList[us.index];
+            
+            us.money -= box.price;
+            box.owner = us;
+
+            us.status = UserStatus.endRound;
+             
         }
+        return rst;
     };
 
     var ins = null;

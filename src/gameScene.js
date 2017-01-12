@@ -3,7 +3,7 @@ var GameScene = cc.Scene.extend({
     diceNum: 0,
     chess: null,
     posiDict: null,
-
+    flag:true,
     ctor: function() {
         this._super();
         this.initLogic();
@@ -12,7 +12,7 @@ var GameScene = cc.Scene.extend({
         this.createDice();
         this.createChessList();
         // this.createChance();  
-        // this.createground();
+        this.createMenu();
         // this.chess=new Chess();
         // this.setChessPosition();
         // this.addChild(this.chess);
@@ -22,36 +22,75 @@ var GameScene = cc.Scene.extend({
     accept: function(eventName, data) {
         var dict = {};
 
-        dict['diceNum'] = function(data) {
-            let us = this.currUser;
-            var ch = this.chessList.find(function(ch) {
-                return ch.name == us.name;
-            });
-            this.move(ch, data);
-            us.index = (us.index + data) % mapData.length;
+        dict['diceNum'] = function(data,next) {
+            var rst = this.lg.act(UserAction.dice);
+            var diceNum = rst.diceNum;
+            var arr = [];
+            
+            // 骰子滚动的动画
+            arr.push(function(cb){
+                this.dice.ani(diceNum,function(){
+                    setTimeout(cb,400);
+                });
+            }.bind(this));
+
+            // 棋子移动的动画
+            arr.push(function(cb){
+                    let us = this.currUser;
+                    var ch = this.chessList.find(function(ch) {
+                        return ch.name == us.name;
+                    });
+                    this.move(ch, diceNum);
+                    us.index = (us.index + diceNum) % mapData.length;
+                    cb();
+            }.bind(this));
+
+
+            async.series(arr,function(err,data){
+                console.log('ani list complete');
+                next && next();
+            }.bind(this));
 
             // release action right
-            this.round();
+            // this.round();
         };
 
-        dict[eventName].bind(this)(data);
+        dict['buy'] = function(data,next){
+                this.lg.act('buy');
+                next && next();
+        };
+
+        dict[eventName].bind(this)(data,function(){
+            this.reqActionList();
+        }.bind(this));
     },
     // 确定当前玩家
     round: function() {
         var lg = this.lg;
         lg.round();
         var username = lg.currUser.name;
-        var actionList = lg.currActionList;
 
-        this.parseActionList(actionList);
+        this.reqActionList();
 
 
     },
+    // 请求可以执行的操作
+    reqActionList:function(){
+        var actionList = this.lg.getActionList();
+        this.parseActionList(actionList);
+        console.log(actionList);
+    },
+
     parseActionList: function(actionList) {
         var dict = {};
         var us = this.currUser = this.lg.findUser(this.lg.currUser.name);
         if(us.role == UserRole.com){
             this.AI();
+            return;
+        }
+        
+        if(!actionList.length){
+            this.round();
             return;
         }
 
@@ -63,12 +102,17 @@ var GameScene = cc.Scene.extend({
 
         // 可以buy
         dict[UserAction.buy] = function(){
-            console.log('can buy ...');
+            // todo 
+            // show panel
+            this.accept('buy');
         };
+
 
         actionList.forEach(function(act) {
             dict[act].bind(this)();
         }.bind(this));
+
+
     },
     AI: function(user) {
         var user = this.lg.currUser;
@@ -394,95 +438,19 @@ var GameScene = cc.Scene.extend({
         this.addChild(dice);
         this.canDice = false;
     },
-    createground: function() {
-
-        var ground = new cc.Sprite();
-        this.addChild(ground);
-
-        var self = this;
-        cc.eventManager.addListener({
-            event: cc.EventListener.MOUSE,
-            onMouseDown: function(event) {
-                var pos = event.getLocation();
-
-                if (self.checkChancePos(pos)) {
-
-                    var groundBox = new cc.Sprite();
-                    groundBox.x = 250;
-                    groundBox.y = 300;
-                    var dn = new cc.DrawNode();
-                    var ltp = cc.p(0, 200);
-                    var rbp = cc.p(300, 0);
-                    dn.drawRect(ltp, rbp, cc.color(0, 0, 0, 150));
-                    groundBox.addChild(dn);
-                    var txt = new cc.LabelTTF('请选择以下操作：', '', 18);
-                    txt.color = cc.color(255, 255, 255);
-                    txt.x = 150;
-                    txt.y = 150;
-                    dn.addChild(txt);
-
-                    var dnl = new cc.DrawNode();
-                    var ltpl = cc.p(0, 30);
-                    var rbpl = cc.p(50, 0);
-                    dnl.x = 50;
-                    dnl.y = 50;
-                    dnl.drawRect(ltpl, rbpl, cc.color(5, 85, 152, 200));
-                    dn.addChild(dnl);
-                    var txtl = new cc.LabelTTF('购买', '', 15);
-                    txtl.color = cc.color(255, 255, 255);
-                    txtl.x = 25;
-                    txtl.y = 15;
-                    dnl.addChild(txtl);
-
-                    var dnc = new cc.DrawNode();
-                    var ltpc = cc.p(0, 30);
-                    var rbpc = cc.p(50, 0);
-                    dnc.x = 125;
-                    dnc.y = 50;
-                    dnc.drawRect(ltpc, rbpc, cc.color(200, 20, 20, 200));
-                    dn.addChild(dnc);
-                    var txtc = new cc.LabelTTF('升级', '', 15);
-                    txtc.color = cc.color(255, 255, 255);
-                    txtc.x = 25;
-                    txtc.y = 15;
-                    dnc.addChild(txtc);
-
-                    var dnr = new cc.DrawNode();
-                    var ltpr = cc.p(0, 30);
-                    var rbpr = cc.p(50, 0);
-                    dnr.x = 200;
-                    dnr.y = 50;
-                    dnr.drawRect(ltpr, rbpr, cc.color(40, 220, 103, 200));
-                    dn.addChild(dnr);
-                    var txtr = new cc.LabelTTF('放弃', '', 15);
-                    txtr.color = cc.color(255, 255, 255);
-                    txtr.x = 25;
-                    txtr.y = 15;
-                    dnr.addChild(txtr);
-
-                    self.addChild(groundBox);
-
-
-                }
-            }
-        }, this);
-
-
-        return ground;
-    },
+    createMenu:function(){
+        var menu=new Menu();
+        menu.x = 0;
+        menu.y = 0;
+        this.addChild(menu);
+        
+    },   
     checkPos: function(pos) {
         return ((pos.x >= 480 && pos.x <= 600) &&
             (pos.y >= 350 && pos.y <= 460))
     },
-    checkChancePos: function(pos) {
-        return (
-            (pos.x >= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 2 && pos.x <= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 3) && (pos.y >= 0 && pos.y <= CONFIG.BIGBOX_SIZE) ||
-            (pos.x >= 20 && pos.x <= CONFIG.BIGBOX_SIZE) && (pos.y >= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 6 && pos.y <= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 7) ||
-            (pos.x >= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 6 && pos.x <= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 7) && (pos.y >= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 9 && pos.y <= CONFIG.BIGBOX_SIZE * 2 + CONFIG.SMALLBOX_SIZE * 9) ||
-            (pos.x >= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 9) && (pos.y >= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 2 && pos.y <= CONFIG.BIGBOX_SIZE + CONFIG.SMALLBOX_SIZE * 3)
-        )
-    },
     move: function(ch, stepCount) {
+        console.log("stepCount",stepCount);
         var posiList = [];
         for (var i = 0; i < stepCount; i++) {
             var index = (ch.user.index + i + 1) % 40;
