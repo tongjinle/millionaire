@@ -98,6 +98,7 @@
         this.currUser = this.userList[this.userIndex];
         this.currUser.status = UserStatus.beforeDice;
         this.currActionList = this.getActionList();
+        this.cancelActionList = [];
     };
 
 
@@ -120,7 +121,7 @@
             // 是否ground有owner
             // user的money够不够
             var box = this.boxList[us.index];
-            if (BoxType.ground == box.type && !box.owner && us.money >= box.price) {
+            if (BoxType.ground == box.type && !box.owner && us.money >= box.price &&this.cancelActionList.indexOf(UserAction.buy)==-1) {
                 list.push(UserAction.buy);
             }
             
@@ -144,6 +145,9 @@
 
             us.status = UserStatus.endRound;
              
+        }else if(actName == UserAction.cancel){
+            this.cancelActionList = data.actionName;
+            // us.status = UserStatus.endRound;
         }
         return rst;
     };

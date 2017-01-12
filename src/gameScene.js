@@ -3,11 +3,13 @@ var GameScene = cc.Scene.extend({
     diceNum: 0,
     chess: null,
     posiDict: null,
-    flag:true,
+    flag: true,
     ctor: function() {
         this._super();
         this.initLogic();
         this.posiDict = {};
+        // 动画队列管理器
+        this.aniMgr = new AniMgr();
         this.createGameMap(mapData, mapColorData);
         this.createDice();
         this.createChessList();
@@ -21,32 +23,31 @@ var GameScene = cc.Scene.extend({
     // 接受来自子级的信息
     accept: function(eventName, data) {
         var dict = {};
-
-        dict['diceNum'] = function(data,next) {
+        // 投骰子
+        dict['diceNum'] = function(data, next) {
             var rst = this.lg.act(UserAction.dice);
             var diceNum = rst.diceNum;
             var arr = [];
-            
+
             // 骰子滚动的动画
-            arr.push(function(cb){
-                this.dice.ani(diceNum,function(){
-                    setTimeout(cb,400);
+            arr.push(function(cb) {
+                this.dice.ani(diceNum, function() {
+                    setTimeout(cb, 400);
                 });
             }.bind(this));
 
             // 棋子移动的动画
-            arr.push(function(cb){
-                    let us = this.currUser;
-                    var ch = this.chessList.find(function(ch) {
-                        return ch.name == us.name;
-                    });
-                    this.move(ch, diceNum);
-                    us.index = (us.index + diceNum) % mapData.length;
-                    cb();
+            arr.push(function(cb) {
+                let us = this.currUser;
+                var ch = this.chessList.find(function(ch) {
+                    return ch.name == us.name;
+                });
+                this.move(ch, diceNum,cb);
+                us.index = (us.index + diceNum) % mapData.length;
             }.bind(this));
 
 
-            async.series(arr,function(err,data){
+            async.series(arr, function(err, data) {
                 console.log('ani list complete');
                 next && next();
             }.bind(this));
@@ -55,13 +56,30 @@ var GameScene = cc.Scene.extend({
             // this.round();
         };
 
-        dict['buy'] = function(data,next){
-                this.lg.act('buy');
-                next && next();
+        // 购买ground
+        dict['buy'] = function(data, next) {
+            this.lg.act('buy');
+            next && next();
         };
 
-        dict[eventName].bind(this)(data,function(){
-            this.reqActionList();
+        // 取消
+        dict['cancel'] = function(data, next) {
+            if (data.type == 'buy') {
+                this.lg.act('cancel', {
+                    actionName: 'buy'
+                });
+                this.menu.toggle(false);
+            }
+            next && next();
+        };
+
+        this.aniMgr.push(function(cb){
+            dict[eventName].bind(this)(data, function() {
+                // 再次请求可以执行的actionList
+                this.reqActionList();
+                cb();
+            }.bind(this));
+
         }.bind(this));
     },
     // 确定当前玩家
@@ -75,7 +93,7 @@ var GameScene = cc.Scene.extend({
 
     },
     // 请求可以执行的操作
-    reqActionList:function(){
+    reqActionList: function() {
         var actionList = this.lg.getActionList();
         this.parseActionList(actionList);
         console.log(actionList);
@@ -84,12 +102,13 @@ var GameScene = cc.Scene.extend({
     parseActionList: function(actionList) {
         var dict = {};
         var us = this.currUser = this.lg.findUser(this.lg.currUser.name);
-        if(us.role == UserRole.com){
+        if (us.role == UserRole.com) {
             this.AI();
             return;
         }
-        
-        if(!actionList.length){
+
+        // 如果没有任何可以操作的action,就施放行动权限
+        if (!actionList.length) {
             this.round();
             return;
         }
@@ -101,10 +120,18 @@ var GameScene = cc.Scene.extend({
         };
 
         // 可以buy
-        dict[UserAction.buy] = function(){
+        dict[UserAction.buy] = function() {
             // todo 
             // show panel
-            this.accept('buy');
+
+            var menu = this.menu;
+            this.aniMgr.push(function(cb){
+                menu.toggle(true, 'buy');
+                cb();
+            });
+                
+
+
         };
 
 
@@ -438,19 +465,18 @@ var GameScene = cc.Scene.extend({
         this.addChild(dice);
         this.canDice = false;
     },
-    createMenu:function(){
-        var menu=new Menu();
-        menu.x = 0;
-        menu.y = 0;
+    createMenu: function() {
+        var menu = this.menu = new Menu();
+        this.menu.setPosition(cc.winSize.width / 2, cc.winSize.height / 2);
         this.addChild(menu);
-        
-    },   
+
+    },
     checkPos: function(pos) {
         return ((pos.x >= 480 && pos.x <= 600) &&
             (pos.y >= 350 && pos.y <= 460))
     },
-    move: function(ch, stepCount) {
-        console.log("stepCount",stepCount);
+    move: function(ch, stepCount,next) {
+        console.log("stepCount", stepCount);
         var posiList = [];
         for (var i = 0; i < stepCount; i++) {
             var index = (ch.user.index + i + 1) % 40;
@@ -460,8 +486,11 @@ var GameScene = cc.Scene.extend({
             return cc.moveTo(0.2, cc.p(posi));
 
         });
+        moveActList.push(cc.callFunc(next));
         console.log(posiList);
         ch.runAction(cc.sequence(moveActList));
     }
+
+
 
 });

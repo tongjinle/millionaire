@@ -4,5 +4,8 @@ var UserAction = {
     pay:"pay",
     build:"build",
     stop:"stop",
-    chance:"chance"
+    chance:"chance",
+
+
+    cancel:'cancel'
 };
