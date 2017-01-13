@@ -73,6 +73,8 @@ var UserInfo = cc.Sprite.extend({
         this.width = 200;
         this.height = 75;
 
+        this.name = username;
+
         this._createBg(color);
         this._createUserName(username);
         this._createMoney();

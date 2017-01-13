@@ -60,6 +60,11 @@ var GameScene = cc.Scene.extend({
         // 购买ground
         dict['buy'] = function(data, next) {
             this.lg.act('buy');
+            // 
+            var currUser = this.lg.currUser;
+            var usInfo = _.find(this.userInfoList, function(usInfo) {return usInfo.name == currUser.name; });
+            usInfo.setMoney(currUser.money);
+
             this.menu.toggle(false);
             next && next();
         };
@@ -474,6 +479,7 @@ var GameScene = cc.Scene.extend({
 
     },
     createUserInfo: function() {
+        this.userInfoList = [];
         console.log(this.lg.userList);
         var colors = [
             cc.color(242, 32, 180, 150),
@@ -485,9 +491,9 @@ var GameScene = cc.Scene.extend({
             var usInfo = new UserInfo(us.name, us.money, colors[i]);
             usInfo.x = (cc.winSize.width/2 - usInfo.width/2) + (i%2) * usInfo.width;
             usInfo.y = 578 - Math.floor(i / 2) * usInfo.height;
-            console.log(i,us.name,usInfo.x,usInfo.y);
-             console.log('usInfo:',usInfo.x,usInfo.y,usInfo.anchorX,usInfo.anchorY)
             this.addChild(usInfo);
+
+            this.userInfoList.push(usInfo);
         }.bind(this));
 
 
