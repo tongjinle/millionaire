@@ -82,7 +82,7 @@ var UserInfo = cc.Sprite.extend({
     },
 
     setMoney: function(money) {
-        this.txt_money.string = '金　额：' + money + '　元';
+        this.txt_money.string = '　　　' + money + '　元';
     },
     _createBg: function(color) {
         var bg = new cc.DrawNode();
@@ -94,13 +94,12 @@ var UserInfo = cc.Sprite.extend({
     },
 
     _createUserName: function(username) {
-        var txt_title = new cc.LabelTTF('用户名：', '', 14);
-        txt_title.color = cc.color(255, 255, 255);
+        var txt_title = new cc.Sprite('chess_'+username+'.png');
         txt_title.x = 50;
-        txt_title.y = 50;
+        txt_title.y = 35;
         var txt_name = new cc.LabelTTF(username, '', 14);
         txt_name.color = cc.color(255, 255, 255);
-        txt_name.x = 116;
+        txt_name.x = 120;
         txt_name.y = 50;
 
         this.addChild(txt_title);
@@ -109,7 +108,7 @@ var UserInfo = cc.Sprite.extend({
     _createMoney: function() {
         var txt_money = this.txt_money = new cc.LabelTTF('', '', 14);
         txt_money.color = cc.color(255, 255, 255);
-        txt_money.x = 85;
+        txt_money.x = 100;
         txt_money.y = 25;
         this.addChild(txt_money);
 
