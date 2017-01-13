@@ -10,6 +10,8 @@ var GameScene = cc.Scene.extend({
         this.posiDict = {};
         // 动画队列管理器
         this.aniMgr = new AniMgr();
+        this.boxList = [];
+
         this.createGameMap(mapData, mapColorData);
         this.createDice();
         this.createChessList();
@@ -60,11 +62,17 @@ var GameScene = cc.Scene.extend({
         // 购买ground
         dict['buy'] = function(data, next) {
             this.lg.act('buy');
-            // 
+
+            // 玩家扣钱 
             var currUser = this.lg.currUser;
             console.log(currUser);
             var usInfo = _.find(this.userInfoList, function(usInfo) {return usInfo.name == currUser.name; });
             usInfo.setMoney(currUser.money);
+
+            // 地皮打上标记
+            var lgGround = this.lg.boxList[currUser.index];
+            var ground = _.find(this.boxList,function(bo){return bo.name == lgGround.name;});
+            ground.setOwnerLogo(currUser.name)            ;
 
             this.menu.toggle(false);
             next && next();
@@ -340,50 +348,12 @@ var GameScene = cc.Scene.extend({
                             cc.scaleTo(0.07, 0.07))).repeatForever());
 
 
-
                 // todo
                 return s;
             },
             'ground': function(data) {
-                var s = new cc.Sprite();
-                s.width = CONFIG.SMALLBOX_SIZE;
-                s.height = CONFIG.BIGBOX_SIZE;
-                window.tjl = s;
-
-                var dn = new cc.DrawNode();
-                var ltp = cc.p(0, 20);
-                var rbp = cc.p(60, 0);
-
-                var groupcolor = mapColorData[data.group] ? mapColorData[data.group].toUpperCase() : mapColorData['default'].toUpperCase();
-                dn.drawRect(ltp, rbp, cc.color[groupcolor]);
-                dn.y = s.height / 1.2;
-
-                s.addChild(dn);
-                var db = new cc.DrawNode();
-                var lt = cc.p(0, 100);
-                var rb = cc.p(60, 0);
-                db.drawRect(lt, rb, cc.color(190, 216, 120));
-                s.addChild(db);
-
-                var s1 = new cc.Sprite.create("chess_sunxiaomei.png");
-                s1.setScaleX(.6);
-                s1.setScaleY(.6);
-                s1.rotation = 0;
-                s1.x = s.width / 2;
-                s1.y = s.height / 2+s1.height;
-                db.addChild(s1);
-
-                var txt = new cc.LabelTTF('' + data.cityname + '', '', 18);
-                txt.color = cc.color(0, 0, 0);
-                txt.x = s.width / 2;
-                txt.y = s.height / 1.8;
-                s.addChild(txt);
-
-                var pricetxt = new cc.LabelTTF('' + data.price + '', '', 18);
-                pricetxt.color = cc.color(255, 0, 0);
-                pricetxt.x = s.width / 2;
-                pricetxt.y = s.height / 3;
-                s.addChild(pricetxt);
+                var groupcolor = mapColorData[data.group];
+                var s = new GroundBox(data.name,data.cityname,data.price,data.group,groupcolor);
                 return s;
 
             },
@@ -438,7 +408,7 @@ var GameScene = cc.Scene.extend({
         };
 
         var s = dict[boxData.type].bind(this)(boxData);
-
+        this.boxList.push(s);
         this.addChild(s);
         return s;
     },
