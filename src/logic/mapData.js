@@ -5,8 +5,8 @@
 	{
 		type:'ground',
 		price:50,
-		name:'tokyo',
-		cityname:'东京',
+		name:'beijing',
+		cityname:'北京',
 		group:'100'
 
 	},
@@ -17,15 +17,15 @@
 	{
 		type:'ground',
 		price:100,
-		name:'mingguwu',
-		cityname:'名古屋',
+		name:'shanghai',
+		cityname:'上海',
 		group:'100'
 	},
     {
 		type:'ground',
 		price:80,
-		name:'hangzhou',
-		cityname:'北海道',
+		name:'guangzhou',
+		cityname:'广州',
 		group:'100'
     },
 		{
@@ -38,8 +38,8 @@
 		{
 			type:'ground',
 			price:70,
-			name:'guangzhou',
-			cityname:'广州',
+			name:'mingguwu',
+			cityname:'名古屋',
 			group:'200'
 		},
 		{
@@ -48,15 +48,15 @@
 		{
 			type:'ground',
 			price:70,
-			name:'chaozhou',
-			cityname:'潮州',
+			name:'beihaidao',
+			cityname:'北海道',
 			group:'200'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'dongguan',
-			cityname:'东莞',
+			name:'dongjing',
+			cityname:'东京',
 			group:'200'
 		},
 		{
@@ -65,8 +65,8 @@
 		{
 			type:'ground',
 			price:70,
-			name:'nannin',
-			cityname:'南宁',
+			name:'jilongpo',
+			cityname:'吉隆坡',
 			group:'300'
 		},
 		{
@@ -76,15 +76,15 @@
 	    {
 			type:'ground',
 			price:70,
-			name:'baise',
-			cityname:'百色',
+			name:'munihei',
+			cityname:'慕尼黑',
 			group:'300'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'beihai',
-			cityname:'北海',
+			name:'baili',
+			cityname:'巴黎',
 			group:'300'
 		},
 		{
@@ -97,8 +97,8 @@
 		{
 			type:'ground',
 			price:70,
-			name:'lanzhou',
-			cityname:'兰州',
+			name:'lundun',
+			cityname:'伦敦',
 			group:'400'
 		},
 		{
@@ -107,15 +107,15 @@
 		{
 			type:'ground',
 			price:70,
-			name:'baiying',
-			cityname:'白银',
+			name:'bolin',
+			cityname:'柏林',
 			group:'400'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'dingxi',
-			cityname:'定西',
+			name:'luoma',
+			cityname:'罗马',
 			group:'400'
 		},
 		{
@@ -124,8 +124,8 @@
 		{
 			type:'ground',
 			price:70,
-			name:'haikou',
-			cityname:'海口',
+			name:'milan',
+			cityname:'米兰',
 			group:'500'
 		},
 		{
@@ -135,15 +135,15 @@
 	    {
 			type:'ground',
 			price:70,
-			name:'baisha',
-			cityname:'白沙',
+			name:'bulage',
+			cityname:'布拉格',
 			group:'500'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'baoting',
-			cityname:'保亭',
+			name:'moxike',
+			cityname:'莫斯科',
 			group:'500'
 		},
 		{
@@ -156,8 +156,8 @@
 		{
 			type:'ground',
 			price:70,
-			name:'zhengzhou',
-			cityname:'郑州',
+			name:'weinisi',
+			cityname:'威尼斯',
 			group:'600'
 
 		},
@@ -167,15 +167,15 @@
 		{
 			type:'ground',
 			price:70,
-			name:'anyang',
-			cityname:'安阳',
+			name:'niuyue',
+			cityname:'纽约',
 			group:'600'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'hebi',
-			cityname:'鹤壁',
+			name:'huashengdun',
+			cityname:'华盛顿',
 			group:'600'
 		},
 		{
@@ -184,8 +184,8 @@
 		{
 			type:'ground',
 			price:70,
-			name:'hegang',
-			cityname:'鹤岗',
+			name:'zhijiage',
+			cityname:'芝加哥',
 			group:'700'
 		},
 		{
@@ -195,15 +195,15 @@
 	    {
 			type:'ground',
 			price:70,
-			name:'heihe',
-			cityname:'黑河',
+			name:'luoshanji',
+			cityname:'洛杉矶',
 			group:'700'
 		},
 	    {
 			type:'ground',
 			price:70,
-			name:'jixi',
-			cityname:'鸡西',
+			name:'duolunduo',
+			cityname:'多伦多',
 			group:'700'
 		},
 		{
@@ -216,8 +216,8 @@
 		{
 			type:'ground',
 			price:70,
-			name:'taibei',
-			cityname:'台北',
+			name:'dibai',
+			cityname:'迪拜',
 			group:'800'
 		},
 		{
@@ -226,15 +226,15 @@
 		{
 			type:'ground',
 			price:70,
-			name:'gaoxiong',
-			cityname:'高雄',
+			name:'shengbaoluo',
+			cityname:'圣保罗',
 			group:'800'
 		},
 		{
 			type:'ground',
 			price:70,
-			name:'taizhong',
-			cityname:'台中',
+			name:'xini',
+			cityname:'悉尼',
 			group:'800'
 		},
 	];
