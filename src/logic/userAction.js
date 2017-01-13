@@ -6,6 +6,7 @@ var UserAction = {
     stop:"stop",
     chance:"chance",
 
+    all:'all',
 
     cancel:'cancel'
 };

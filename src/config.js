@@ -9,7 +9,7 @@ var CONFIG={
 
 
     // 玩家初始money
-    USER_MONEY:10000,
+    USER_MONEY:1000,
 
 
 
@@ -19,5 +19,15 @@ var CONFIG={
 
 
     // startPoint的奖励
-    STARTPOINT_REWARD:2000
+    STARTPOINT_REWARD:2000,
+
+
+
+    // AI
+    AI:{
+        // 机器人buy的警戒money值
+        BUY_TERMINAL:2000,
+        // 机器人buy的冒险几率
+        BUY_RACE_RATE:.3
+    }
 };

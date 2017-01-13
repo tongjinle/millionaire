@@ -71,12 +71,14 @@ var GameScene = cc.Scene.extend({
 
         // 取消
         dict['cancel'] = function(data, next) {
-            if (data.type == 'buy') {
-                this.lg.act('cancel', {
-                    actionName: 'buy'
-                });
+            var cancelData ;
+            if (!data) {
+               cancelData = null;
+            } else  if (data.type == 'buy') {
                 this.menu.toggle(false);
+                cancelData = {actionName: 'buy'}
             }
+            this.lg.act('cancel',cancelData);
             next && next();
         };
 
@@ -153,14 +155,20 @@ var GameScene = cc.Scene.extend({
     ai: function(actionList) {
         var user = this.lg.currUser;
         console.log('ai:' + user.name + '\'s round ...');
-        var interval = [1000, 2500];
+        var interval = [200, 500];
         var delay = Math.floor(Math.random() * (interval[1] - interval[0])) + interval[0];
         setTimeout(function() {
             // 让logic去判断ai可以执行的actionList,从而来选择一个act
             var aiAct = this.lg.ai(actionList);
+            if(!aiAct){
+                this.accept('cancel');
+                return;
+            }
             // 根据logic的ai的act选择,来渲染gameScene
             if(aiAct.actName == 'dice'){
                 this.accept('diceNum');
+            }else if(aiAct.actName == 'buy'){
+                this.accept('buy');
             }
 
         }.bind(this), delay);
