@@ -491,7 +491,7 @@ var GameScene = cc.Scene.extend({
         }.bind(this));
 
 
-    },
+    }, 
     createowner: function() {
         var owner = this.owner = new Owner();
         owner.x = 100;
