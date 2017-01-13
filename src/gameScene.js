@@ -62,6 +62,7 @@ var GameScene = cc.Scene.extend({
             this.lg.act('buy');
             // 
             var currUser = this.lg.currUser;
+            console.log(currUser);
             var usInfo = _.find(this.userInfoList, function(usInfo) {return usInfo.name == currUser.name; });
             usInfo.setMoney(currUser.money);
 
@@ -349,7 +350,13 @@ var GameScene = cc.Scene.extend({
                 db.drawRect(lt, rb, cc.color(190, 216, 120));
                 s.addChild(db);
 
-
+                var s1 = new cc.Sprite.create("chess_sunxiaomei.png");
+                s1.setScaleX(.6);
+                s1.setScaleY(.6);
+                s1.rotation = 0;
+                s1.x = s.width / 2;
+                s1.y = s.height / 2+s1.height;
+                db.addChild(s1);
 
                 var txt = new cc.LabelTTF('' + data.cityname + '', '', 18);
                 txt.color = cc.color(0, 0, 0);
