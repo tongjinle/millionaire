@@ -109,10 +109,6 @@ var GameScene = cc.Scene.extend({
     parseActionList: function(actionList) {
         var dict = {};
         var us = this.currUser = this.lg.findUser(this.lg.currUser.name);
-        if (us.role == UserRole.com) {
-            this.AI();
-            return;
-        }
 
         // 如果没有任何可以操作的action,就施放行动权限
         if (!actionList.length) {
@@ -121,6 +117,12 @@ var GameScene = cc.Scene.extend({
         }
 
         this.dice.canDice = false;
+        
+        if (us.role == UserRole.com) {
+            this.ai(actionList);
+            return;
+        }
+
         // 可以dice
         dict[UserAction.dice] = function() {
             this.dice.canDice = true;
@@ -148,13 +150,18 @@ var GameScene = cc.Scene.extend({
 
 
     },
-    AI: function(user) {
+    ai: function(actionList) {
         var user = this.lg.currUser;
-        console.log('AI:' + user.name + '\'s round ...');
+        console.log('ai:' + user.name + '\'s round ...');
         var interval = [1000, 2500];
         var delay = Math.floor(Math.random() * (interval[1] - interval[0])) + interval[0];
         setTimeout(function() {
-            this.dice.act();
+            // 让logic去判断ai可以执行的actionList,从而来选择一个act
+            var aiAct = this.lg.ai(actionList);
+            // 根据logic的ai的act选择,来渲染gameScene
+            if(aiAct.actName == 'dice'){
+                this.accept('diceNum');
+            }
 
         }.bind(this), delay);
     },

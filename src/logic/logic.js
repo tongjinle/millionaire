@@ -101,6 +101,15 @@
         this.cancelActionList = [];
     };
 
+    // 获取ai的动作
+    // {actName:string,data:any}
+    handler.ai = function(actionList){
+        var us = this.currUser;
+        if(actionList.indexOf(UserAction.dice)>=0){
+            return {actName:'dice'};
+        }
+    };
+
 
     // 获取随机点数
     handler.getDiceNum = function() {

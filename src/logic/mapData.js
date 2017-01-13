@@ -5,8 +5,8 @@
 	{
 		type:'ground',
 		price:50,
-		name:'shanghai',
-		cityname:'上海',
+		name:'tokyo',
+		cityname:'东京',
 		group:'100'
 
 	},
@@ -17,15 +17,15 @@
 	{
 		type:'ground',
 		price:100,
-		name:'suzhou',
-		cityname:'苏州',
+		name:'mingguwu',
+		cityname:'名古屋',
 		group:'100'
 	},
     {
 		type:'ground',
 		price:80,
 		name:'hangzhou',
-		cityname:'杭州',
+		cityname:'北海道',
 		group:'100'
     },
 		{
