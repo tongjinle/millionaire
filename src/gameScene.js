@@ -15,6 +15,7 @@ var GameScene = cc.Scene.extend({
         this.createChessList();
         // this.createChance();  
         this.createMenu();
+        this.createUserInfo();
         // this.chess=new Chess();
         // this.setChessPosition();
         // this.addChild(this.chess);
@@ -42,7 +43,7 @@ var GameScene = cc.Scene.extend({
                 var ch = this.chessList.find(function(ch) {
                     return ch.name == us.name;
                 });
-                this.move(ch, diceNum,cb);
+                this.move(ch, diceNum, cb);
                 us.index = (us.index + diceNum) % mapData.length;
             }.bind(this));
 
@@ -59,6 +60,12 @@ var GameScene = cc.Scene.extend({
         // 购买ground
         dict['buy'] = function(data, next) {
             this.lg.act('buy');
+            // 
+            var currUser = this.lg.currUser;
+            var usInfo = _.find(this.userInfoList, function(usInfo) {return usInfo.name == currUser.name; });
+            usInfo.setMoney(currUser.money);
+
+            this.menu.toggle(false);
             next && next();
         };
 
@@ -73,7 +80,7 @@ var GameScene = cc.Scene.extend({
             next && next();
         };
 
-        this.aniMgr.push(function(cb){
+        this.aniMgr.push(function(cb) {
             dict[eventName].bind(this)(data, function() {
                 // 再次请求可以执行的actionList
                 this.reqActionList();
@@ -125,11 +132,11 @@ var GameScene = cc.Scene.extend({
             // show panel
 
             var menu = this.menu;
-            this.aniMgr.push(function(cb){
+            this.aniMgr.push(function(cb) {
                 menu.toggle(true, 'buy');
                 cb();
             });
-                
+
 
 
         };
@@ -471,11 +478,37 @@ var GameScene = cc.Scene.extend({
         this.addChild(menu);
 
     },
+    createUserInfo: function() {
+        this.userInfoList = [];
+        console.log(this.lg.userList);
+        var colors = [
+            cc.color(242, 32, 180, 150),
+            cc.color(0, 255, 48, 150),
+            cc.color(0, 150, 150, 150),
+            cc.color(100, 31, 0, 150)
+        ];
+        _.each(this.lg.userList, function(us, i) {
+            var usInfo = new UserInfo(us.name, us.money, colors[i]);
+            usInfo.x = (cc.winSize.width/2 - usInfo.width/2) + (i%2) * usInfo.width;
+            usInfo.y = 578 - Math.floor(i / 2) * usInfo.height;
+            this.addChild(usInfo);
+
+            this.userInfoList.push(usInfo);
+        }.bind(this));
+
+
+    }, 
+    createowner: function() {
+        var owner = this.owner = new Owner();
+        owner.x = 100;
+        owner.y = 100;
+        this.addChild(owner);
+    },
     checkPos: function(pos) {
         return ((pos.x >= 480 && pos.x <= 600) &&
             (pos.y >= 350 && pos.y <= 460))
     },
-    move: function(ch, stepCount,next) {
+    move: function(ch, stepCount, next) {
         console.log("stepCount", stepCount);
         var posiList = [];
         for (var i = 0; i < stepCount; i++) {
