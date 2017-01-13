@@ -1,17 +1,38 @@
 {
-    "debugMode"     : 1,
+    "debugMode"     : 0,
     "frameRate"     : 60,
     "id"            : "gameCanvas",
     "renderMode"    : 1,
     "jsList"        : [
+        "node_modules/async/dist/async.js",
+
         "src/gameScene.js",
-        "src/mapData.js",
         "src/config.js",
         "src/res.js",
-        "src/helloScene.js",
-        "src/box.js",
+        "src/logic/mapData.js",
+        "src/logic/logic.js",
+        "src/logic/user.js",
+        "src/logic/userRole.js",
+        "src/logic/userAction.js",
+        "src/logic/userStatus.js",
+            
+        "src/logic/boxes/boxType.js",
+        "src/logic/boxes/startPoint.js",
+        "src/logic/boxes/train.js",
+        "src/logic/boxes/chance.js",
+        "src/logic/boxes/hospital.js",
+        "src/logic/boxes/hotel.js",
+        "src/logic/boxes/jail.js",
+        "src/logic/boxes/tax.js",
+        "src/logic/boxes/ground.js",
+
+        "src/aniMgr.js",
+        "src/menu.js",
+        "src/dice.js",
+        "src/gameScene.js",
         "src/config.js",
-        "src/mapData.js",
-        "src/gameScene.js"
+        "src/chess.js",
+        "src/chanceBox.js"
+
     ]
 }

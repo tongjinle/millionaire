@@ -8,6 +8,7 @@
 		name:'shanghai',
 		cityname:'上海',
 		group:'100'
+
 	},
 	{
 		type:'tax',
@@ -178,7 +179,7 @@
 			group:'600'
 		},
 		{
-			type:'Hospital'
+			type:'hospital'
 		},
 		{
 			type:'ground',
@@ -238,7 +239,22 @@
 		},
 	];
 
+	var groupcolorDict = {
+		'default':'black',
+		'100':'red',
+		'200':'green',
+		'300':'blue',
+		'400':'yellow',
+		'500':'magenta',
+		'600':'orange',
+		'700':'gray',
+		'800':'black'
+	};
+
+
+
 
 
 	this.mapData = data;
+	this.mapColorData = groupcolorDict;
 }).call(this);
