@@ -9,7 +9,7 @@ var CONFIG={
 
 
     // 玩家初始money
-    USER_MONEY:1000,
+    USER_MONEY:4000,
 
 
 

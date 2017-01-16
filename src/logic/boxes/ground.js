@@ -5,11 +5,10 @@
         this.name = name;
         this.price = price;
         this.group = group;
-
         this.owner = null;
         // 房子等级,最高是4级
         this.level = 0 ;
-
+       
         // 最高等级
         this._maxLevel = CONFIG.GROUND_MAX_LEVEL;
     };

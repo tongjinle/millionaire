@@ -77,6 +77,20 @@ var GameScene = cc.Scene.extend({
             this.menu.toggle(false);
             next && next();
         };
+        dict['pay']=function(data, next) {
+            var rst = this.lg.act(UserAction.pay);
+            
+            var money = rst.money;
+            var ownername = rst.ownername;
+
+            var currUser = this.lg.currUser;
+            
+            var usInfo = _.find(this.userInfoList, function(usInfo) {return usInfo.name == currUser.name; });
+            var ownerUsInfo = _.find(this.userInfoList, function(usInfo) {return usInfo.name == ownername; });
+            usInfo.setMoney(usInfo.money - money);
+            ownerUsInfo.setMoney(ownerUsInfo.money + money);
+            next && next();
+        }
 
         // 取消
         dict['cancel'] = function(data, next) {
@@ -149,14 +163,28 @@ var GameScene = cc.Scene.extend({
                 menu.toggle(true, 'buy');
                 cb();
             });
+        };
 
-
-
+        // 需要pay
+        dict[UserAction.pay] = function(data){
+            this.aniMgr.push(function(cb){
+                this.accept('pay');
+                cb();
+            });
         };
 
 
         actionList.forEach(function(act) {
-            dict[act].bind(this)();
+            var actName;
+            var actData;
+            if(typeof act == 'string'){
+                actName = act;
+                actData = null;
+            }else{
+                actName = act.name;
+                actData = act.data;
+            }
+            dict[actName].bind(this)(actData);
         }.bind(this));
 
 
@@ -178,6 +206,8 @@ var GameScene = cc.Scene.extend({
                 this.accept('diceNum');
             }else if(aiAct.actName == 'buy'){
                 this.accept('buy');
+            }if(aiAct.actName == 'pay'){
+                this.accept('pay');
             }
 
         }.bind(this), delay);
