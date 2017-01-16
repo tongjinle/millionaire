@@ -129,7 +129,7 @@
     };
     // 获取随机点数
     handler.getDiceNum = function() {
-        return 2;
+        return 5;
         return Math.ceil(Math.random() * 6);
     };
 

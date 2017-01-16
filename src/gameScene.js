@@ -334,7 +334,7 @@ var GameScene = cc.Scene.extend({
                 return s;
             },
             'train': function(data) {
-                var s = new TrainBox(data.trainname);
+                var s = new TrainBox(data.trainname,data.name,data.group);
                 return s;
             },
         };
