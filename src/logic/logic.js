@@ -121,10 +121,15 @@
             return isBuy ? {
                 actName: 'buy'
             } : null;
+        } else if (actionList.indexOf(UserAction.pay) >=0) {
+            return{
+                actName: 'pay'
+            };
         }
     };
-
-
+    handler.pay=function(us){
+        us.money-=1000;
+    }
     // 获取随机点数
     handler.getDiceNum = function() {
         return 4;
@@ -138,7 +143,7 @@
 
         if (us.status == UserStatus.beforeDice) {
             list.push(UserAction.dice);
-        } else if (us.status == UserStatus.afterStatus) {
+        } else if (us.status == UserStatus.afterDice) {
             // buy
             // 是不是ground
             // 是否ground有owner
@@ -146,8 +151,9 @@
             var box = this.boxList[us.index];
             if (BoxType.ground == box.type && !box.owner && us.money >= box.price ) {
                 list.push(UserAction.buy);
+            }else if(BoxType.ground == box.type && box.owner && box.owner!=us) {
+                list.push(UserAction.pay);
             }
-
         }
         if (this.cancelActionList.indexOf(UserAction.all) >= 0) {
             list = [];
@@ -159,7 +165,6 @@
 
         return list;
     };
-
     // 执行一个方法
     handler.act = function(actName, data) {
         var us = this.currUser;
@@ -168,7 +173,7 @@
             rst = {
                 diceNum: this.getDiceNum()
             };
-            us.status = UserStatus.afterStatus;
+            us.status = UserStatus.afterDice;
         } else if (actName == UserAction.buy) {
             let box = this.boxList[us.index];
 
@@ -177,6 +182,30 @@
 
             us.status = UserStatus.endRound;
 
+        } else if(actName == UserAction.pay) {
+            /*
+            data format:
+            {
+                ownername:string,
+                money:number
+            }
+            */
+            // let box = this.boxList[us.index];
+            var ground = this.boxList[us.index];
+            var owner = ground.owner;
+            var group = _.filter(this.boxList,function(bo){return bo.group == ground.group;});
+            var isAll = _.all(group,function(bo){return bo.owner == owner;});
+            var money = ground.pay(isAll);
+            owner.money += money;
+            us.money -= money;
+            // todo 
+            // 如果us破产....
+            rst = {
+                ownername:owner.name,
+                money:money
+            };
+            
+            us.status =UserStatus.endRound;
         } else if (actName == UserAction.cancel) {
             if (!data) {
                 this.cancelActionList = [UserAction.all];
