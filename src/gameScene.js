@@ -170,7 +170,7 @@ var GameScene = cc.Scene.extend({
             this.aniMgr.push(function(cb){
                 this.accept('pay');
                 cb();
-            });
+            }.bind(this));
         };
 
 
