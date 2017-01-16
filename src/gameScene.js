@@ -256,98 +256,24 @@ var GameScene = cc.Scene.extend({
 
         var dict = {
             'startPoint': function(data) {
-                var s = new cc.Sprite();
-                var s1 = new cc.Sprite.create("start.jpg");
-
-                s1.setScale(0.3);
-                s.width = CONFIG.BIGBOX_SIZE;
-                s.height = CONFIG.BIGBOX_SIZE;
-                s1.x = s.width / 2;
-                s1.y = s.height / 2;
-
-                s.addChild(s1);
-
-
+                var s=new StartPointBox();
                 return s;
             },
             'jail': function(data) {
-                var s = new cc.Sprite();
-                s.width = CONFIG.BIGBOX_SIZE;
-                s.height = CONFIG.BIGBOX_SIZE;
-                var s1 = new cc.Sprite.create("jail.jpeg");
-                s1.setScaleX(0.2);
-                s1.setScaleY(0.3);
-                s.width = CONFIG.BIGBOX_SIZE;
-                s.height = CONFIG.BIGBOX_SIZE;
-                s1.x = s.width / 2;
-                s1.y = s.height / 2;
-                s.addChild(s1);
+                var s=new JailBox();
 
                 return s;
             },
             'hotel': function(data) {
-                var s = new cc.Sprite();
-                s.width = CONFIG.BIGBOX_SIZE;
-                s.height = CONFIG.BIGBOX_SIZE;
-                var s1 = new cc.Sprite.create("hotel.png");
-                s1.setScale(1.6);
-                s1.rotation = 0;
-                s1.x = s.width / 2;
-                s1.y = s.height / 2;
-                s.addChild(s1);
+                var s=new HotelBox();
                 return s;
             },
             'hospital': function(data) {
-                var s = new cc.Sprite();
-                s.width = CONFIG.BIGBOX_SIZE;
-                s.height = CONFIG.BIGBOX_SIZE;
-
-                var s1 = new cc.Sprite.create("hospital.jpg");
-                s1.setScale(0.12);
-                s1.rotation = 0;
-                s1.x = s.width / 2;
-                s1.y = s.height / 2;
-                s.addChild(s1);
+                var s=new HospitalBox();
                 return s;
             },
             'tax': function(data) {
-                var s = new cc.Sprite();
-
-                var s1 = new cc.Sprite.create("coin.png");
-                var s2 = new cc.Sprite.create();
-                s1.setScaleX(0.05);
-                s1.setScaleY(0.05);
-                s2.setScaleX(0.32);
-                s2.setScaleY(0.32);
-                s.width = CONFIG.SMALLBOX_SIZE;
-                s.height = CONFIG.BIGBOX_SIZE;
-                s1.x = s.width / 2;
-                s1.y = s.height / 2.8;
-                s2.x = s.width / 1.7;
-                s2.y = s.height / 2.6;
-
-
-                var db = new cc.DrawNode();
-                var lt = cc.p(0, 120);
-                var rb = cc.p(60, 0);
-                db.drawRect(lt, rb, cc.color(190, 216, 120));
-                s.addChild(db);
-                var txt = new cc.LabelTTF('Tax', '', 18);
-                txt.color = cc.color(0, 0, 0);
-                txt.x = s.width / 2;
-                txt.y = s.height / 1.4;
-                db.addChild(s1);
-                db.addChild(s2);
-                s.addChild(txt);
-
-
-
-                s1.runAction(
-                    cc.spawn(cc.rotateBy(3, 360, 360),
-                        cc.sequence(cc.scaleTo(0.05, 0.05),
-                            cc.scaleTo(0.07, 0.07))).repeatForever());
-
-
+                var s=new TaxBox();
                 // todo
                 return s;
             },
@@ -358,51 +284,11 @@ var GameScene = cc.Scene.extend({
 
             },
             'chance': function(data) {
-                var s = new cc.Sprite();
-                s.width = CONFIG.SMALLBOX_SIZE;
-                s.height = CONFIG.BIGBOX_SIZE;
-
-                var s1 = new cc.Sprite.create("chance.png");
-                s1.setScaleX(1);
-                s1.setScaleY(0.5);
-                s1.rotation = 0;
-                s1.x = s.width / 2;
-                s1.y = s.height / 2;
-
-                var db = new cc.DrawNode();
-                var lt = cc.p(0, 120);
-                var rb = cc.p(60, 0);
-                db.drawRect(lt, rb, cc.color(190, 216, 120));
-                s.addChild(db);
-                db.addChild(s1);
+                var s = new ChanceBox();
                 return s;
             },
             'train': function(data) {
-                var s = new cc.Sprite();
-                s.width = CONFIG.SMALLBOX_SIZE;
-                s.height = CONFIG.BIGBOX_SIZE;
-
-                var s1 = new cc.Sprite.create("train.jpg");
-                s1.setScaleX(0.1);
-                s1.setScaleY(0.15);
-                s1.rotation = 0;
-                s1.x = s.width / 2;
-                s1.y = s.height / 3;
-                s.addChild(s1);
-
-                var dn = new cc.DrawNode();
-                var ltp = cc.p(0, 20);
-                var rbp = cc.p(60, 0);
-                dn.drawRect(ltp, rbp, cc.color(164, 35, 25));
-                dn.y = s.height / 1.2;
-                s.addChild(dn);
-
-                var txt = new cc.LabelTTF('' + data.trainname + '', '', 18);
-                txt.color = cc.color(255, 0, 0);
-                txt.x = s.width / 2;
-                txt.y = s.height / 1.4;
-                s.addChild(txt);
-                // todo
+                var s = new TrainBox(data.trainname);
                 return s;
             },
         };

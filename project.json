@@ -35,6 +35,12 @@
         "src/config.js",
         "src/chess.js",
         "src/groundBox.js",
+        "src/hospitalBox.js",
+        "src/taxBox.js",
+        "src/trainBox.js",
+        "src/jailBox.js",
+        "src/hotelBox.js",
+        "src/startPointBox.js",
         "src/chanceBox.js"
 
     ]
