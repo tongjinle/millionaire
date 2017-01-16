@@ -66,42 +66,53 @@ var GameScene = cc.Scene.extend({
             // 玩家扣钱 
             var currUser = this.lg.currUser;
             console.log(currUser);
-            var usInfo = _.find(this.userInfoList, function(usInfo) {return usInfo.name == currUser.name; });
+            var usInfo = _.find(this.userInfoList, function(usInfo) {
+                return usInfo.name == currUser.name;
+            });
             usInfo.setMoney(currUser.money);
 
             // 地皮打上标记
             var lgGround = this.lg.boxList[currUser.index];
-            var ground = _.find(this.boxList,function(bo){return bo.name == lgGround.name;});
-            ground.setOwnerLogo(currUser.name)            ;
+            var ground = _.find(this.boxList, function(bo) {
+                return bo.name == lgGround.name;
+            });
+            ground.setOwnerLogo(currUser.name);
 
             this.menu.toggle(false);
             next && next();
         };
-        dict['pay']=function(data, next) {
+        dict['pay'] = function(data, next) {
             var rst = this.lg.act(UserAction.pay);
-            
-            var money = rst.money;
-            var ownername = rst.ownername;
-
             var currUser = this.lg.currUser;
-            
-            var usInfo = _.find(this.userInfoList, function(usInfo) {return usInfo.name == currUser.name; });
-            var ownerUsInfo = _.find(this.userInfoList, function(usInfo) {return usInfo.name == ownername; });
-            usInfo.setMoney(usInfo.money - money);
-            ownerUsInfo.setMoney(ownerUsInfo.money + money);
-            next && next();
-        }
+            var money = rst.money;
+            var usInfo = _.find(this.userInfoList, function(usInfo) {
+                return usInfo.name == currUser.name;
+            });
+            if (rst.payType == 'ground') {   
+                var ownername = rst.ownername;
+                var ownerUsInfo = _.find(this.userInfoList, function(usInfo) {
+                    return usInfo.name == ownername;
+                });
+                usInfo.setMoney(usInfo.money - money);
+                ownerUsInfo.setMoney(ownerUsInfo.money + money);
+            } else if (rst.payType == 'tax') {
+                usInfo.setMoney(money);
+            }
 
+            next && next();
+        };
         // 取消
         dict['cancel'] = function(data, next) {
-            var cancelData ;
+            var cancelData;
             if (!data) {
-               cancelData = null;
-            } else  if (data.type == 'buy') {
+                cancelData = null;
+            } else if (data.type == 'buy') {
                 this.menu.toggle(false);
-                cancelData = {actionName: 'buy'}
+                cancelData = {
+                    actionName: 'buy'
+                }
             }
-            this.lg.act('cancel',cancelData);
+            this.lg.act('cancel', cancelData);
             next && next();
         };
 
@@ -142,7 +153,7 @@ var GameScene = cc.Scene.extend({
         }
 
         this.dice.canDice = false;
-        
+
         if (us.role == UserRole.com) {
             this.ai(actionList);
             return;
@@ -166,29 +177,35 @@ var GameScene = cc.Scene.extend({
         };
 
         // 需要pay
-        dict[UserAction.pay] = function(data){
-            this.aniMgr.push(function(cb){
+        dict[UserAction.pay] = function(data) {
+            this.aniMgr.push(function(cb) {
                 this.accept('pay');
                 cb();
             }.bind(this));
         };
-
+        //tax
+        dict[UserAction.tax] = function(data) {
+            this.aniMgr.push(function(cb) {
+                this.accept('tax');
+                cb();
+            }.bind(this));
+        };
 
         actionList.forEach(function(act) {
             var actName;
             var actData;
-            if(typeof act == 'string'){
+            if (typeof act == 'string') {
                 actName = act;
                 actData = null;
-            }else{
+            } else {
                 actName = act.name;
                 actData = act.data;
             }
             dict[actName].bind(this)(actData);
         }.bind(this));
 
-
     },
+
     ai: function(actionList) {
         var user = this.lg.currUser;
         console.log('ai:' + user.name + '\'s round ...');
@@ -197,19 +214,18 @@ var GameScene = cc.Scene.extend({
         setTimeout(function() {
             // 让logic去判断ai可以执行的actionList,从而来选择一个act
             var aiAct = this.lg.ai(actionList);
-            if(!aiAct){
+            if (!aiAct) {
                 this.accept('cancel');
                 return;
             }
             // 根据logic的ai的act选择,来渲染gameScene
-            if(aiAct.actName == 'dice'){
+            if (aiAct.actName == 'dice') {
                 this.accept('diceNum');
-            }else if(aiAct.actName == 'buy'){
+            } else if (aiAct.actName == 'buy') {
                 this.accept('buy');
-            }if(aiAct.actName == 'pay'){
+            } else if (aiAct.actName == 'pay') {
                 this.accept('pay');
             }
-
         }.bind(this), delay);
     },
     setChessPosition: function(ch, index) {
@@ -286,30 +302,30 @@ var GameScene = cc.Scene.extend({
 
         var dict = {
             'startPoint': function(data) {
-                var s=new StartPointBox();
+                var s = new StartPointBox();
                 return s;
             },
             'jail': function(data) {
-                var s=new JailBox();
+                var s = new JailBox();
 
                 return s;
             },
             'hotel': function(data) {
-                var s=new HotelBox();
+                var s = new HotelBox();
                 return s;
             },
             'hospital': function(data) {
-                var s=new HospitalBox();
+                var s = new HospitalBox();
                 return s;
             },
             'tax': function(data) {
-                var s=new TaxBox();
+                var s = new TaxBox();
                 // todo
                 return s;
             },
             'ground': function(data) {
                 var groupcolor = mapColorData[data.group];
-                var s = new GroundBox(data.name,data.cityname,data.price,data.group,groupcolor);
+                var s = new GroundBox(data.name, data.cityname, data.price, data.group, groupcolor);
                 return s;
 
             },
@@ -397,7 +413,7 @@ var GameScene = cc.Scene.extend({
         ];
         _.each(this.lg.userList, function(us, i) {
             var usInfo = new UserInfo(us.name, us.money, colors[i]);
-            usInfo.x = (cc.winSize.width/2 - usInfo.width/2) + (i%2) * usInfo.width;
+            usInfo.x = (cc.winSize.width / 2 - usInfo.width / 2) + (i % 2) * usInfo.width;
             usInfo.y = 578 - Math.floor(i / 2) * usInfo.height;
             this.addChild(usInfo);
 
@@ -405,7 +421,7 @@ var GameScene = cc.Scene.extend({
         }.bind(this));
 
 
-    }, 
+    },
     createowner: function() {
         var owner = this.owner = new Owner();
         owner.x = 100;

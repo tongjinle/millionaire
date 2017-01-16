@@ -11,8 +11,8 @@ var CONFIG={
     // 玩家初始money
     USER_MONEY:4000,
 
-
-
+    // 税率
+    TAX_RATE:.2,
 
     // ground
     GROUND_MAX_LEVEL:4,

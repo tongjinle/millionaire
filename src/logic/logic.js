@@ -121,18 +121,15 @@
             return isBuy ? {
                 actName: 'buy'
             } : null;
-        } else if (actionList.indexOf(UserAction.pay) >=0) {
-            return{
+        } else if (actionList.indexOf(UserAction.pay) >= 0) {
+            return {
                 actName: 'pay'
             };
         }
     };
-    handler.pay=function(us){
-        us.money-=1000;
-    }
     // 获取随机点数
     handler.getDiceNum = function() {
-        return 4;
+        return 2;
         return Math.ceil(Math.random() * 6);
     };
 
@@ -149,9 +146,11 @@
             // 是否ground有owner
             // user的money够不够
             var box = this.boxList[us.index];
-            if (BoxType.ground == box.type && !box.owner && us.money >= box.price ) {
+            if (BoxType.ground == box.type && !box.owner && us.money >= box.price) {
                 list.push(UserAction.buy);
-            }else if(BoxType.ground == box.type && box.owner && box.owner!=us) {
+            } else if (BoxType.ground == box.type && box.owner && box.owner != us) {
+                list.push(UserAction.pay);
+            } else if (BoxType.tax == box.type) {
                 list.push(UserAction.pay);
             }
         }
@@ -182,7 +181,7 @@
 
             us.status = UserStatus.endRound;
 
-        } else if(actName == UserAction.pay) {
+        } else if (actName == UserAction.pay) {
             /*
             data format:
             {
@@ -192,26 +191,39 @@
             */
             // let box = this.boxList[us.index];
             var ground = this.boxList[us.index];
-            var owner = ground.owner;
-            var group = _.filter(this.boxList,function(bo){return bo.group == ground.group;});
-            var isAll = _.all(group,function(bo){return bo.owner == owner;});
-            var money = ground.pay(isAll);
-            owner.money += money;
-            us.money -= money;
-            // todo 
-            // 如果us破产....
-            rst = {
-                ownername:owner.name,
-                money:money
-            };
-            
-            us.status =UserStatus.endRound;
+            if (ground.type == 'ground') {
+                var owner = ground.owner;
+                var group = _.filter(this.boxList, function(bo) {
+                    return bo.group == ground.group;
+                });
+                var isAll = _.all(group, function(bo) {
+                    return bo.owner == owner;
+                });
+                var money = ground.pay(isAll);
+                owner.money += money;
+                us.money -= money;
+                // todo 
+                // 如果us破产....
+                rst = {
+                    payType:'ground',
+                    ownername: owner.name,
+                    money: money
+                };
+            } else if (ground.type == 'tax') {
+                us.money -= us.money * CONFIG.TAX_RATE;
+                rst = {
+                    payType:'tax',
+                    money: us.money
+                };
+            }
+            us.status = UserStatus.endRound;
+
         } else if (actName == UserAction.cancel) {
             if (!data) {
                 this.cancelActionList = [UserAction.all];
-            }else{
+            } else {
                 this.cancelActionList = [data.actionName];
-                
+
             }
             // us.status = UserStatus.endRound;
         }
