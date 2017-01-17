@@ -151,6 +151,11 @@ var GameScene = cc.Scene.extend({
                 cancelData = {
                     actionName: 'buy'
                 }
+            } else if (data.type == 'build') {
+                this.menu.toggle(false);
+                cancelData = {
+                    actionName: 'build'
+                }
             }
             this.lg.act('cancel', cancelData);
             next && next();

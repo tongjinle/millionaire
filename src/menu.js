@@ -63,10 +63,12 @@ var Menu = cc.Sprite.extend({
         dn.addChild(buildBtn);
 
         // 放弃
-        var cancelBtn = this._createBtn('放弃', cc.p(200, 50), cc.color(40, 220, 103, 200), function() {
-            this.parent.accept('cancel', {
-                type: 'buy'
-            });
+        var cancelBtn = this._createBtn('放弃', cc.p(200, 50), cc.color(40, 220, 103, 200), function() { 
+            if(!this._buildBtn.visible){
+                this.parent.accept('cancel', { type: 'buy'});
+            }else {
+                this.parent.accept('cancel', {type: 'build'});
+            }
         }.bind(this));
         dn.addChild(cancelBtn);
 
