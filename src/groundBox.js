@@ -1,5 +1,5 @@
 var GroundBox = cc.Sprite.extend({
-    ctor: function(name,cityname,price,group,groupcolor) {
+    ctor: function(name,cityname,price,group,groupcolor,level) {
         this._super();
 
         this.name = name;
@@ -12,6 +12,7 @@ var GroundBox = cc.Sprite.extend({
 
         this._createBg(groupcolor);
         this._createOwnerLogo();
+        this._createHousebuild();
     },
     setOwnerLogo:function(name){
         this.ownerLogo.texture = "chess_"+name+".png";
@@ -26,7 +27,19 @@ var GroundBox = cc.Sprite.extend({
         s.y = this.height / 2 + s.height;
         this.addChild(s);
     },
-
+    setHousebuild:function(level){
+        this.housebuild.texture = "home"+level+".png";
+    },
+    _createHousebuild:function(){
+        var s = this.housebuild = new cc.Sprite();
+        s.width = 50;
+        s.height = 50;
+        s.setScaleX(.2);
+        s.setScaleY(.2);
+        s.x = this.width / 2;
+        s.y = this.height / 2- (s.height/1.3);
+        this.addChild(s);
+    },    
     _createBg: function(groupcolor) {
         var dn = new cc.DrawNode();
         var ltp = cc.p(0, 20);
@@ -54,7 +67,7 @@ var GroundBox = cc.Sprite.extend({
         var pricetxt = new cc.LabelTTF('' + this.price + '', '', 18);
         pricetxt.color = cc.color(255, 0, 0);
         pricetxt.x = this.width / 2;
-        pricetxt.y = this.height / 3;
+        pricetxt.y = this.height / 2.6;
         this.addChild(pricetxt);
     }
 });
