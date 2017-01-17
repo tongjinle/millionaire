@@ -81,6 +81,27 @@ var GameScene = cc.Scene.extend({
             this.menu.toggle(false);
             next && next();
         };
+        dict['buy'] = function(data, next) {
+            this.lg.act('buy');
+
+            // 玩家扣钱 
+            var currUser = this.lg.currUser;
+            console.log(currUser);
+            var usInfo = _.find(this.userInfoList, function(usInfo) {
+                return usInfo.name == currUser.name;
+            });
+            usInfo.setMoney(currUser.money);
+
+            // 地皮打上标记
+            var lgGround = this.lg.boxList[currUser.index];
+            var ground = _.find(this.boxList, function(bo) {
+                return bo.name == lgGround.name;
+            });
+            ground.setOwnerLogo(currUser.name);
+
+            this.menu.toggle(false);
+            next && next();
+        };
         dict['pay'] = function(data, next) {
             var rst = this.lg.act(UserAction.pay);
             var currUser = this.lg.currUser;
@@ -101,6 +122,25 @@ var GameScene = cc.Scene.extend({
 
             next && next();
         };
+        dict['build'] = function(data, next) {
+            // 更改usInfo信息价格
+            this.lg.act('build');
+            var currUser =this.lg.currUser;
+            usInfo = _.find(this.userInfoList,function(usInfo) {
+                return usInfo.name ==currUser.name;
+            });
+            usInfo.setMoney(currUser.money);
+            // 房子建造
+            var lgGround = this.lg.boxList[currUser.index];
+            var ground = _.find(this.boxList, function(bo) {
+                return bo.name == lgGround.name;
+            });
+            //调用一个函数
+            ground.buildhouse(),
+
+            this. menu.toggle(false);
+            next && next();
+        }
         // 取消
         dict['cancel'] = function(data, next) {
             var cancelData;
@@ -175,7 +215,13 @@ var GameScene = cc.Scene.extend({
                 cb();
             });
         };
-
+        dict[UserAction.build] = function(){
+            var menu =this.menu;
+            this.aniMgr.push(function(cb) {
+                menu.toggle(true, 'build');
+                cb();
+            });
+        };
         // 需要pay
         dict[UserAction.pay] = function(data) {
             this.aniMgr.push(function(cb) {
@@ -216,6 +262,8 @@ var GameScene = cc.Scene.extend({
                 this.accept('buy');
             } else if (aiAct.actName == 'pay') {
                 this.accept('pay');
+            } else if (aiAct.actName == 'build') {
+                this.accept('build');
             }
         }.bind(this), delay);
     },
