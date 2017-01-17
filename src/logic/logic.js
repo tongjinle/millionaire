@@ -66,7 +66,10 @@
                 return box;
             },
             'train': function(data) {
-                var box = new Train();
+                var name = data.name;
+                var price = data.price;
+                var group = data.group;
+                var box = new Train(name, price, group);
                 return box;
             },
             'hotel': function(data) {
@@ -129,7 +132,7 @@
     };
     // 获取随机点数
     handler.getDiceNum = function() {
-        return 5;
+        return 4;
         return Math.ceil(Math.random() * 6);
     };
 
@@ -148,10 +151,16 @@
             var box = this.boxList[us.index];
             if (BoxType.ground == box.type && !box.owner && us.money >= box.price) {
                 list.push(UserAction.buy);
+            } else if (BoxType.train == box.type && !box.owner && us.money >= box.price) {
+                list.push(UserAction.buy);
             } else if (BoxType.ground == box.type && box.owner && box.owner != us) {
                 list.push(UserAction.pay);
             } else if (BoxType.tax == box.type) {
                 list.push(UserAction.pay);
+            }else if (BoxType.train == box.type) {
+                list.push(UserAction.pay);
+            }else if(BoxType.ground==box.type && box.owner==us&&us.money>=box.buildPrice()){
+                list.push(UserAction.build);
             }
         }
         if (this.cancelActionList.indexOf(UserAction.all) >= 0) {
@@ -175,21 +184,14 @@
             us.status = UserStatus.afterDice;
         } else if (actName == UserAction.buy) {
             let box = this.boxList[us.index];
-
+            if(box.type=='train'){
+            }
             us.money -= box.price;
             box.owner = us;
 
             us.status = UserStatus.endRound;
 
         } else if (actName == UserAction.pay) {
-            /*
-            data format:
-            {
-                ownername:string,
-                money:number
-            }
-            */
-            // let box = this.boxList[us.index];
             var ground = this.boxList[us.index];
             if (ground.type == 'ground') {
                 var owner = ground.owner;
@@ -205,15 +207,31 @@
                 // todo 
                 // 如果us破产....
                 rst = {
-                    payType:'ground',
+                    payType: 'ground',
                     ownername: owner.name,
                     money: money
                 };
             } else if (ground.type == 'tax') {
                 us.money -= us.money * CONFIG.TAX_RATE;
                 rst = {
-                    payType:'tax',
+                    payType: 'tax',
                     money: us.money
+                };
+            } else if (ground.type == 'train') {
+                var owner = ground.owner;
+                var group = _.filter(this.boxList, function(bo) {
+                    return bo.group == ground.group;
+                });
+                var groupCount = _.filter(group, function(bo) {
+                    return bo.owner == owner;
+                }).length;
+                var money = ground.pay(groupCount);
+                owner.money += money;
+                us.money -= money;
+                rst = {
+                    payType: 'train',
+                    ownername: owner.name,
+                    money: money
                 };
             }
             us.status = UserStatus.endRound;

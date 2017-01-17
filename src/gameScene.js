@@ -88,7 +88,7 @@ var GameScene = cc.Scene.extend({
             var usInfo = _.find(this.userInfoList, function(usInfo) {
                 return usInfo.name == currUser.name;
             });
-            if (rst.payType == 'ground') {   
+            if (rst.payType == 'ground'||rst.payType == 'train') {   
                 var ownername = rst.ownername;
                 var ownerUsInfo = _.find(this.userInfoList, function(usInfo) {
                     return usInfo.name == ownername;
@@ -192,16 +192,7 @@ var GameScene = cc.Scene.extend({
         };
 
         actionList.forEach(function(act) {
-            var actName;
-            var actData;
-            if (typeof act == 'string') {
-                actName = act;
-                actData = null;
-            } else {
-                actName = act.name;
-                actData = act.data;
-            }
-            dict[actName].bind(this)(actData);
+            dict[act].bind(this)();
         }.bind(this));
 
     },

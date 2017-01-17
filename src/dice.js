@@ -1,6 +1,6 @@
 var Dice = cc.Sprite.extend({
     ctor: function() {
-        this._super('dice1.jpg');
+        this._super('dice1.png');
         this.bind();
         this.canDice = true;
     },
@@ -30,10 +30,10 @@ var Dice = cc.Sprite.extend({
         var count = 0;
         this.schedule(function() {
             var rnd = Math.ceil(Math.random() * 6);
-            this.texture = 'dice' + rnd + '.jpg';
+            this.texture = 'dice' + rnd + '.png';
             count++;
             if (count == repeatCount + 1) {
-                this.texture = 'dice' + diceNum + '.jpg';
+                this.texture = 'dice' + diceNum + '.png';
                 next && next();
             }
         }.bind(this), delay, repeatCount);

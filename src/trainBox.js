@@ -1,8 +1,8 @@
-var TrainBox = cc.Sprite.extend({  
-    ctor: function(trainname,name,group) {  
-        this._super();  
+var TrainBox = cc.Sprite.extend({
+    ctor: function(trainname, name, group) {
+        this._super();
         this.name = name;
-        this.trainname=trainname;
+        this.trainname = trainname;
         this.group = group;
         this.width = CONFIG.SMALLBOX_SIZE;
         this.height = CONFIG.BIGBOX_SIZE;
@@ -10,10 +10,10 @@ var TrainBox = cc.Sprite.extend({
         this._createOwnerLogo();
 
     },  
-    setOwnerLogo:function(name){
-        this.ownerLogo.texture = "chess_"+name+".png";
+    setOwnerLogo: function(name) {
+        this.ownerLogo.texture = "chess_" + name + ".png";
     },
-    _createOwnerLogo:function(){
+    _createOwnerLogo: function() {
         var s = this.ownerLogo = new cc.Sprite();
         s.width = 50;
         s.height = 50;
@@ -24,7 +24,6 @@ var TrainBox = cc.Sprite.extend({
         this.addChild(s);
     },
     _createBg:function(){
-
 
         var s1 = new cc.Sprite.create("train.jpg");
         s1.setScaleX(0.1);
@@ -48,4 +47,4 @@ var TrainBox = cc.Sprite.extend({
         this.addChild(txt);
 
     }
-    });
+});
