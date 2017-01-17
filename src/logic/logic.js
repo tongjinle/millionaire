@@ -128,6 +128,10 @@
             return {
                 actName: 'pay'
             };
+        } else if(actionList.indexOf(UserAction.build) >=0) {
+            return { 
+                actName: 'build'
+            }
         }
     };
     // 获取随机点数
@@ -159,7 +163,7 @@
                 list.push(UserAction.pay);
             }else if (BoxType.train == box.type) {
                 list.push(UserAction.pay);
-            }else if(BoxType.ground==box.type && box.owner==us&&us.money>=box.buildPrice()){
+            }else if(BoxType.ground == box.type && box.owner == us && us.money >= box.buildPrice()){
                 list.push(UserAction.build);
             }
         }
@@ -236,7 +240,14 @@
             }
             us.status = UserStatus.endRound;
 
-        } else if (actName == UserAction.cancel) {
+        }else if(actName == UserAction.build){
+            let box = this.boxList[us.index];
+            us.money -= box.buildPrice();
+            if(box.canBuild()){
+                box.level++;
+            }
+            us.status = UserStatus.endRound; 
+        }else if (actName == UserAction.cancel) {
             if (!data) {
                 this.cancelActionList = [UserAction.all];
             } else {
@@ -244,10 +255,9 @@
 
             }
             // us.status = UserStatus.endRound;
-        }
+        } 
         return rst;
     };
-
     var ins = null;
     var getLogic = function() {
         if (!ins) {
