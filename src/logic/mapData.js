@@ -1,257 +1,215 @@
-(function(){
+(function() {
 	var data = [{
-		type:'startPoint'
-	},
-	{
-		type:'ground',
-		price:50,
-		name:'beijing',
-		cityname:'北京',
-		group:'100'
+		type: 'startPoint'
+	}, {
+		type: 'ground',
+		price: 50,
+		name: 'beijing',
+		cityname: '北京',
+		group: '100'
 
-	},
-	{
-		type:'tax',
-		desc:'收取个人所得税10%'
-	},
-	{
-		type:'ground',
-		price:100,
-		name:'shanghai',
-		cityname:'上海',
-		group:'100'
-	},
-    {
-		type:'ground',
-		price:80,
-		name:'guangzhou',
-		cityname:'广州',
-		group:'100'
-    },
-		{
-			type:'train',
-			price:50,
-			name:'xinganxian',
-			trainname:'新干线',
-			group:'trainGroup'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'mingguwu',
-			cityname:'名古屋',
-			group:'200'
-		},
-		{
-			type:'chance'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'beihaidao',
-			cityname:'北海道',
-			group:'200'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'dongjing',
-			cityname:'东京',
-			group:'200'
-		},
-		{
-			type:'jail'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'jilongpo',
-			cityname:'吉隆坡',
-			group:'300'
-		},
-		{
-		type:'tax',
-		desc:'收取个人所得税10%'
-	    },
-	    {
-			type:'ground',
-			price:70,
-			name:'munihei',
-			cityname:'慕尼黑',
-			group:'300'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'baili',
-			cityname:'巴黎',
-			group:'300'
-		},
-		{
-			type:'train',
-			price:50,
-			name:'hexiehao',
-			trainname:'和谐号',
-			group:'trainGroup'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'lundun',
-			cityname:'伦敦',
-			group:'400'
-		},
-		{
-			type:'chance'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'bolin',
-			cityname:'柏林',
-			group:'400'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'luoma',
-			cityname:'罗马',
-			group:'400'
-		},
-		{
-			type:'hotel'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'milan',
-			cityname:'米兰',
-			group:'500'
-		},
-		{
-		type:'tax',
-		desc:'收取个人所得税10%'
-	    },
-	    {
-			type:'ground',
-			price:70,
-			name:'bulage',
-			cityname:'布拉格',
-			group:'500'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'moxike',
-			cityname:'莫斯科',
-			group:'500'
-		},
-		{
-			type:'train',
-			price:50,
-			name:'xiwanghao',
-			trainname:'希望号',
-			group:'trainGroup'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'weinisi',
-			cityname:'威尼斯',
-			group:'600'
+	}, {
+		type: 'tax',
+		desc: '收取个人所得税10%'
+	}, {
+		type: 'ground',
+		price: 100,
+		name: 'shanghai',
+		cityname: '上海',
+		group: '100'
+	}, {
+		type: 'ground',
+		price: 80,
+		name: 'guangzhou',
+		cityname: '广州',
+		group: '100'
+	}, {
+		type: 'train',
+		price: 50,
+		name: 'xinganxian',
+		trainname: '新干线',
+		group: 'trainGroup'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'mingguwu',
+		cityname: '名古屋',
+		group: '200'
+	}, {
+		type: 'chance'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'beihaidao',
+		cityname: '北海道',
+		group: '200'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'dongjing',
+		cityname: '东京',
+		group: '200'
+	}, {
+		type: 'jail'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'jilongpo',
+		cityname: '吉隆坡',
+		group: '300'
+	}, {
+		type: 'tax',
+		desc: '收取个人所得税10%'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'munihei',
+		cityname: '慕尼黑',
+		group: '300'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'baili',
+		cityname: '巴黎',
+		group: '300'
+	}, {
+		type: 'train',
+		price: 50,
+		name: 'hexiehao',
+		trainname: '和谐号',
+		group: 'trainGroup'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'lundun',
+		cityname: '伦敦',
+		group: '400'
+	}, {
+		type: 'chance'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'bolin',
+		cityname: '柏林',
+		group: '400'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'luoma',
+		cityname: '罗马',
+		group: '400'
+	}, {
+		type: 'hotel'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'milan',
+		cityname: '米兰',
+		group: '500'
+	}, {
+		type: 'tax',
+		desc: '收取个人所得税10%'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'bulage',
+		cityname: '布拉格',
+		group: '500'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'moxike',
+		cityname: '莫斯科',
+		group: '500'
+	}, {
+		type: 'train',
+		price: 50,
+		name: 'xiwanghao',
+		trainname: '希望号',
+		group: 'trainGroup'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'weinisi',
+		cityname: '威尼斯',
+		group: '600'
 
-		},
-		{
-			type:'chance'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'niuyue',
-			cityname:'纽约',
-			group:'600'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'huashengdun',
-			cityname:'华盛顿',
-			group:'600'
-		},
-		{
-			type:'hospital'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'zhijiage',
-			cityname:'芝加哥',
-			group:'700'
-		},
-		{
-		type:'tax',
-		desc:'收取个人所得税10%'
-	    },
-	    {
-			type:'ground',
-			price:70,
-			name:'luoshanji',
-			cityname:'洛杉矶',
-			group:'700'
-		},
-	    {
-			type:'ground',
-			price:70,
-			name:'duolunduo',
-			cityname:'多伦多',
-			group:'700'
-		},
-		{
-			type:'train',
-			price:50,
-			name:'dongjingxian',
-			trainname:'东京线',
-			group:'trainGroup'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'dibai',
-			cityname:'迪拜',
-			group:'800'
-		},
-		{
-			type:'chance'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'shengbaoluo',
-			cityname:'圣保罗',
-			group:'800'
-		},
-		{
-			type:'ground',
-			price:70,
-			name:'xini',
-			cityname:'悉尼',
-			group:'800'
-		},
-	];
+	}, {
+		type: 'chance'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'niuyue',
+		cityname: '纽约',
+		group: '600'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'huashengdun',
+		cityname: '华盛顿',
+		group: '600'
+	}, {
+		type: 'hospital'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'zhijiage',
+		cityname: '芝加哥',
+		group: '700'
+	}, {
+		type: 'tax',
+		desc: '收取个人所得税10%'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'luoshanji',
+		cityname: '洛杉矶',
+		group: '700'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'duolunduo',
+		cityname: '多伦多',
+		group: '700'
+	}, {
+		type: 'train',
+		price: 50,
+		name: 'dongjingxian',
+		trainname: '东京线',
+		group: 'trainGroup'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'dibai',
+		cityname: '迪拜',
+		group: '800'
+	}, {
+		type: 'chance'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'shengbaoluo',
+		cityname: '圣保罗',
+		group: '800'
+	}, {
+		type: 'ground',
+		price: 70,
+		name: 'xini',
+		cityname: '悉尼',
+		group: '800'
+	}, ];
 
 	var groupcolorDict = {
-		'default':'black',
-		'100':'red',
-		'200':'green',
-		'300':'blue',
-		'400':'yellow',
-		'500':'magenta',
-		'600':'orange',
-		'700':'gray',
-		'800':'black'
+		'default': 'black',
+		'100': 'red',
+		'200': 'green',
+		'300': 'blue',
+		'400': 'yellow',
+		'500': 'magenta',
+		'600': 'orange',
+		'700': 'gray',
+		'800': 'black'
 	};
-
-
 
 
 

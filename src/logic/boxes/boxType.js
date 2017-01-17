@@ -5,5 +5,6 @@ var BoxType ={
     tax:"tax",
     chance:"chance",
     hotel:"hotel",
-    hospital:"hospital"
+    hospital:"hospital",
+    train:"train"
 };
