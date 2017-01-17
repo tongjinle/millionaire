@@ -136,7 +136,7 @@ var GameScene = cc.Scene.extend({
                 return bo.name == lgGround.name;
             });
             //调用一个函数
-            ground.buildhouse(),
+            ground.setHousebuild(lgGround.level),
 
             this. menu.toggle(false);
             next && next();
