@@ -135,7 +135,7 @@
         }
     };
     // 获取随机点数
-    var diceNumList = [9,40,5,40];
+    var diceNumList = [7,40,5,40];
     var diceIndex = 0;
     handler.getDiceNum = function() {
         var len = this.userList.length;
@@ -173,6 +173,8 @@
                 list.push(UserAction.pay);
             }else if(BoxType.ground == box.type && box.owner == us && us.money >= box.buildPrice()){
                 list.push(UserAction.build);
+            }else if (BoxType.chance == box.type){
+                list.push(UserAction.chance);
             }
         }
         if (this.cancelActionList.indexOf(UserAction.all) >= 0) {
@@ -247,7 +249,6 @@
                 };
             }
             us.status = UserStatus.endRound;
-
         }else if(actName == UserAction.build){
             let box = this.boxList[us.index];
             us.money -= box.buildPrice();
@@ -255,12 +256,18 @@
                 box.level++;
             }
             us.status = UserStatus.endRound; 
+        }else if(actName == UserAction.chance){
+            var randomNum=Math.ceil(Math.random()*chanceBox.length-1);
+            us.index +=chanceBox[randomNum].step;
+            rst ={
+                type:chanceBox[randomNum].type,
+                step:chanceBox[randomNum].step
+            }
         }else if (actName == UserAction.cancel) {
             if (!data) {
                 this.cancelActionList = [UserAction.all];
             } else {
                 this.cancelActionList = [data.actionName];
-
             }
             // us.status = UserStatus.endRound;
         } 
