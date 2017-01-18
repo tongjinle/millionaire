@@ -15,7 +15,7 @@ var UserInfo = cc.Sprite.extend({
 
     setMoney: function(money) {
         this.money =money;
-        this.txt_money.string = '　　　' + money + '　元';
+        this.txt_money.string = '　　　' + Math.floor(money) + '　元';
     },
     _createBg: function(color) {
         var bg = new cc.DrawNode();
