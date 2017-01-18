@@ -10,6 +10,7 @@ var CONFIG={
 
     // 玩家初始money
     USER_MONEY:4000,
+    USER_SPEED:50,
 
     // 税率
     TAX_RATE:.2,

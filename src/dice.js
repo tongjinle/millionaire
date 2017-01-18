@@ -33,6 +33,9 @@ var Dice = cc.Sprite.extend({
             this.texture = 'dice' + rnd + '.png';
             count++;
             if (count == repeatCount + 1) {
+                // mock start
+                diceNum = diceNum>6 ? 1 :diceNum;
+                // mock end
                 this.texture = 'dice' + diceNum + '.png';
                 next && next();
             }

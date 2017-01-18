@@ -135,7 +135,15 @@
         }
     };
     // 获取随机点数
+    var diceNumList = [9,40,5,40];
+    var diceIndex = 0;
     handler.getDiceNum = function() {
+        var len = this.userList.length;
+        if(this.currUser == this.userList[0]){
+            var diceNum = diceNumList[diceIndex];
+            diceIndex = (diceIndex+1)%diceNumList.length;
+            return diceNum;
+        }
         return 4;
         return Math.ceil(Math.random() * 6);
     };

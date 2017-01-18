@@ -484,7 +484,7 @@ var GameScene = cc.Scene.extend({
             posiList.push(this.posiDict[index]);
         }
         var moveActList = posiList.map(function(posi) {
-            return cc.moveTo(0.2, cc.p(posi));
+            return cc.moveTo(CONFIG.USER_SPEED/1000, cc.p(posi));
 
         });
         moveActList.push(cc.callFunc(next));

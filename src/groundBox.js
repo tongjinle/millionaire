@@ -34,10 +34,10 @@ var GroundBox = cc.Sprite.extend({
         var s = this.housebuild = new cc.Sprite();
         s.width = 50;
         s.height = 50;
-        s.setScaleX(.2);
-        s.setScaleY(.2);
+        s.setScaleX(.6);
+        s.setScaleY(.6);
         s.x = this.width / 2;
-        s.y = this.height / 2- (s.height/1.3);
+        s.y = this.height / 2;
         this.addChild(s);
     },    
     _createBg: function(groupcolor) {
