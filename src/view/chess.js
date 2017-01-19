@@ -1,9 +1,6 @@
 var Chess = cc.Sprite.extend({
-	ctor:function(user){
-                this.name = user.name;
-                this.user = user;
-	       this._super("chess_"+user.name+".png");
+	ctor: function(username) {
+		this.name = username;
+		this._super("chess_" + this.name + ".png");
 	}
 });
-
-

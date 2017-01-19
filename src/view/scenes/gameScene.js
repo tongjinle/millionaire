@@ -23,153 +23,7 @@ var GameScene = cc.Scene.extend({
         // this.addChild(this.chess);
         this.round();
     },
-    // 接受来自子级的信息
-    accept: function(eventName, data) {
-        var dict = {};
-        // 投骰子
-        dict['diceNum'] = function(data, next) {
-            var rst = this.lg.act(UserAction.dice);
-            var diceNum = rst.diceNum;
-            var arr = [];
-
-            // 骰子滚动的动画
-            arr.push(function(cb) {
-                this.dice.ani(diceNum, function() {
-                    setTimeout(cb, 400);
-                });
-            }.bind(this));
-
-            // 棋子移动的动画
-            arr.push(function(cb) {
-                let us = this.currUser;
-                var ch = this.chessList.find(function(ch) {
-                    return ch.name == us.name;
-                });
-                this.move(ch, diceNum, cb);
-                us.index = (us.index + diceNum) % mapData.length;
-            }.bind(this));
-
-
-            async.series(arr, function(err, data) {
-                console.log('ani list complete');
-                next && next();
-            }.bind(this));
-
-            // release action right
-            // this.round();
-        };
-
-        // 购买ground
-        dict['buy'] = function(data, next) {
-            this.lg.act('buy');
-
-            // 玩家扣钱 
-            var currUser = this.lg.currUser;
-            console.log(currUser);
-            var usInfo = _.find(this.userInfoList, function(usInfo) {
-                return usInfo.name == currUser.name;
-            });
-            usInfo.setMoney(currUser.money);
-
-            // 地皮打上标记
-            var lgGround = this.lg.boxList[currUser.index];
-            var ground = _.find(this.boxList, function(bo) {
-                return bo.name == lgGround.name;
-            });
-            ground.setOwnerLogo(currUser.name);
-
-            this.menu.toggle(false);
-            next && next();
-        };
-        dict['buy'] = function(data, next) {
-            this.lg.act('buy');
-
-            // 玩家扣钱 
-            var currUser = this.lg.currUser;
-            console.log(currUser);
-            var usInfo = _.find(this.userInfoList, function(usInfo) {
-                return usInfo.name == currUser.name;
-            });
-            usInfo.setMoney(currUser.money);
-
-            // 地皮打上标记
-            var lgGround = this.lg.boxList[currUser.index];
-            var ground = _.find(this.boxList, function(bo) {
-                return bo.name == lgGround.name;
-            });
-            ground.setOwnerLogo(currUser.name);
-
-            this.menu.toggle(false);
-            next && next();
-        };
-        dict['pay'] = function(data, next) {
-            var rst = this.lg.act(UserAction.pay);
-            var currUser = this.lg.currUser;
-            var money = rst.money;
-            var usInfo = _.find(this.userInfoList, function(usInfo) {
-                return usInfo.name == currUser.name;
-            });
-            if (rst.payType == 'ground'||rst.payType == 'train') {   
-                var ownername = rst.ownername;
-                var ownerUsInfo = _.find(this.userInfoList, function(usInfo) {
-                    return usInfo.name == ownername;
-                });
-                usInfo.setMoney(usInfo.money - money);
-                ownerUsInfo.setMoney(ownerUsInfo.money + money);
-            } else if (rst.payType == 'tax') {
-                usInfo.setMoney(money);
-            }
-
-            next && next();
-        };
-        dict['build'] = function(data, next) {
-            // 更改usInfo信息价格
-            this.lg.act('build');
-            var currUser =this.lg.currUser;
-            usInfo = _.find(this.userInfoList,function(usInfo) {
-                return usInfo.name ==currUser.name;
-            });
-            usInfo.setMoney(currUser.money);
-            // 房子建造
-            var lgGround = this.lg.boxList[currUser.index];
-            var ground = _.find(this.boxList, function(bo) {
-                return bo.name == lgGround.name;
-            });
-            //调用一个函数
-            ground.setHousebuild(lgGround.level),
-
-            this. menu.toggle(false);
-            next && next();
-        }
-        // 取消
-        dict['cancel'] = function(data, next) {
-            var cancelData;
-            if (!data) {
-                cancelData = null;
-            } else if (data.type == 'buy') {
-                this.menu.toggle(false);
-                cancelData = {
-                    actionName: 'buy'
-                }
-            } else if (data.type == 'build') {
-                this.menu.toggle(false);
-                cancelData = {
-                    actionName: 'build'
-                }
-            }
-            this.lg.act('cancel', cancelData);
-            next && next();
-        };
-
-        this.aniMgr.push(function(cb) {
-            dict[eventName].bind(this)(data, function() {
-                // 再次请求可以执行的actionList
-                this.reqActionList();
-                cb();
-            }.bind(this));
-
-        }.bind(this));
-    },
+    accept: gameSceneRender,
     // 确定当前玩家
     round: function() {
         var lg = this.lg;
@@ -187,93 +41,9 @@ var GameScene = cc.Scene.extend({
         console.log(actionList);
     },
 
-    parseActionList: function(actionList) {
-        var dict = {};
-        var us = this.currUser = this.lg.findUser(this.lg.currUser.name);
+    parseActionList: gameSceneParseActionList,
 
-        // 如果没有任何可以操作的action,就施放行动权限
-        if (!actionList.length) {
-            this.round();
-            return;
-        }
-
-        this.dice.canDice = false;
-
-        if (us.role == UserRole.com) {
-            this.ai(actionList);
-            return;
-        }
-
-        // 可以dice
-        dict[UserAction.dice] = function() {
-            this.dice.canDice = true;
-        };
-
-        // 可以buy
-        dict[UserAction.buy] = function() {
-            // todo 
-            // show panel
-
-            var menu = this.menu;
-            this.aniMgr.push(function(cb) {
-                menu.toggle(true, 'buy');
-                cb();
-            });
-        };
-        dict[UserAction.build] = function(){
-            var menu =this.menu;
-            this.aniMgr.push(function(cb) {
-                menu.toggle(true, 'build');
-                cb();
-            });
-        };
-        // 需要pay
-        dict[UserAction.pay] = function(data) {
-            this.aniMgr.push(function(cb) {
-                this.accept('pay');
-                cb();
-            }.bind(this));
-        };
-        //tax
-        dict[UserAction.tax] = function(data) {
-            this.aniMgr.push(function(cb) {
-                this.accept('tax');
-                cb();
-            }.bind(this));
-        };
-
-        actionList.forEach(function(act) {
-            dict[act].bind(this)();
-        }.bind(this));
-
-    },
-
-    ai: function(actionList) {
-        var user = this.lg.currUser;
-        console.log('ai:' + user.name + '\'s round ...');
-        var interval = [200, 500];
-        var delay = Math.floor(Math.random() * (interval[1] - interval[0])) + interval[0];
-        setTimeout(function() {
-            // 让logic去判断ai可以执行的actionList,从而来选择一个act
-            var aiAct = this.lg.ai(actionList);
-            if (!aiAct) {
-                this.accept('cancel');
-                return;
-            }
-            // 根据logic的ai的act选择,来渲染gameScene
-            if (aiAct.actName == 'dice') {
-                this.accept('diceNum');
-            } else if (aiAct.actName == 'buy') {
-                this.accept('buy');
-            } else if (aiAct.actName == 'pay') {
-                this.accept('pay');
-            } else if (aiAct.actName == 'build') {
-                this.accept('build');
-            } else if (aiAct.actName == 'chance' ) {
-                this.accept('chance');
-            }
-        }.bind(this), delay);
-    },
+    ai: gameSceneAi,
     setChessPosition: function(ch, index) {
         ch.index = index;
         ch.setPosition(this.posiDict[index]);
@@ -337,7 +107,7 @@ var GameScene = cc.Scene.extend({
 
         var lg = this.lg;
         lg.userList.forEach(function(us) {
-            var ch = new Chess(us);
+            var ch = new Chess(us.name);
             this.addChild(ch);
             this.setChessPosition(ch, us.index);
 
@@ -380,7 +150,7 @@ var GameScene = cc.Scene.extend({
                 return s;
             },
             'train': function(data) {
-                var s = new TrainBox(data.trainname,data.name,data.group);
+                var s = new TrainBox(data.trainname, data.name, data.group);
                 return s;
             },
         };
@@ -474,19 +244,37 @@ var GameScene = cc.Scene.extend({
         owner.y = 100;
         this.addChild(owner);
     },
-    checkPos: function(pos) {
-        return ((pos.x >= 480 && pos.x <= 600) &&
-            (pos.y >= 350 && pos.y <= 460))
-    },
-    move: function(ch, stepCount, next) {
+    // stepCount为行走步数
+    // 如果stepCount为负数，则意味着反向走动
+    move: function(ch, startIndex, stepCount, next) {
         console.log("stepCount", stepCount);
+        var boxLen = this.boxList.length;
         var posiList = [];
-        for (var i = 0; i < stepCount; i++) {
-            var index = (ch.user.index + i + 1) % 40;
-            posiList.push(this.posiDict[index]);
+        // direction 正方向->1 反方向->0
+        var direction = stepCount > 0 ? 1 : 0;
+        for (var i = 0; i < Math.abs(stepCount); i++) {
+            posiList.push((i + 1) * (direction ? 1 : -1));
         }
+        posiList = posiList
+            .map(function(i) {
+                return ((startIndex + i) + boxLen) % boxLen;
+            });
+        console.log(this.currUser.name, posiList);
+        posiList = posiList
+            .map(function(i) {
+                return this.posiDict[i];
+            }.bind(this));
+
+        console.log(posiList);
+        // posiList.each(function(index){
+        //         posiList
+        //     });
+        // for (var i = 0; i < stepCount; i++) {
+        //     var index = (startIndex + i + 1) % 40;
+        //     posiList.push(this.posiDict[index]);
+        // }
         var moveActList = posiList.map(function(posi) {
-            return cc.moveTo(CONFIG.USER_SPEED/1000, cc.p(posi));
+            return cc.moveTo(CONFIG.USER_SPEED / 1000, cc.p(posi));
 
         });
         moveActList.push(cc.callFunc(next));

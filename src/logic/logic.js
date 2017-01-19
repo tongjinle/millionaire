@@ -128,20 +128,20 @@
             return {
                 actName: 'pay'
             };
-        } else if(actionList.indexOf(UserAction.build) >=0) {
-            return { 
+        } else if (actionList.indexOf(UserAction.build) >= 0) {
+            return {
                 actName: 'build'
             }
         }
     };
     // 获取随机点数
-    var diceNumList = [7,40,5,40];
+    var diceNumList = [7, 40, 5, 40];
     var diceIndex = 0;
     handler.getDiceNum = function() {
         var len = this.userList.length;
-        if(this.currUser == this.userList[0]){
+        if (this.currUser == this.userList[0]) {
             var diceNum = diceNumList[diceIndex];
-            diceIndex = (diceIndex+1)%diceNumList.length;
+            diceIndex = (diceIndex + 1) % diceNumList.length;
             return diceNum;
         }
         return 4;
@@ -169,11 +169,11 @@
                 list.push(UserAction.pay);
             } else if (BoxType.tax == box.type) {
                 list.push(UserAction.pay);
-            }else if (BoxType.train == box.type) {
+            } else if (BoxType.train == box.type) {
                 list.push(UserAction.pay);
-            }else if(BoxType.ground == box.type && box.owner == us && us.money >= box.buildPrice()){
+            } else if (BoxType.ground == box.type && box.owner == us && us.money >= box.buildPrice()) {
                 list.push(UserAction.build);
-            }else if (BoxType.chance == box.type){
+            } else if (BoxType.chance == box.type) {
                 list.push(UserAction.chance);
             }
         }
@@ -192,14 +192,17 @@
         var us = this.currUser;
         var rst;
         if (actName == UserAction.dice) {
+            var preIndex = us.index;
+            var diceNum = this.getDiceNum();
             rst = {
-                diceNum: this.getDiceNum()
+                preIndex: preIndex,
+                diceNum: diceNum
             };
+            us.index = (us.index + diceNum) % mapData.length;
             us.status = UserStatus.afterDice;
         } else if (actName == UserAction.buy) {
             let box = this.boxList[us.index];
-            if(box.type=='train'){
-            }
+            if (box.type == 'train') {}
             us.money -= box.price;
             box.owner = us;
 
@@ -249,29 +252,58 @@
                 };
             }
             us.status = UserStatus.endRound;
-        }else if(actName == UserAction.build){
+        } else if (actName == UserAction.build) {
             let box = this.boxList[us.index];
             us.money -= box.buildPrice();
-            if(box.canBuild()){
+            if (box.canBuild()) {
                 box.level++;
             }
-            us.status = UserStatus.endRound; 
-        }else if(actName == UserAction.chance){
-            var randomNum=Math.ceil(Math.random()*chanceBox.length-1);
-            rst ={
-                type:chanceBox[randomNum].type,
-                step:chanceBox[randomNum].step
+            us.status = UserStatus.endRound;
+        } else if (actName == UserAction.chance) {
+            var chanceOpt = CONFIG.chances[ Math.ceil(Math.random() * CONFIG.chances.length - 1)];
+            var preIndex = us.index;
+            chanceObj = {
+                type: chanceOpt.type,
+                data: chanceOpt.getData()
+            };
+            this._parseChance(chanceObj);
+
+            rst = {
+                type:chanceObj.type,
+            };
+
+            if(rst.type == 'move'){
+                rst.preIndex = preIndex;;
+                rst.stepCount = chanceObj.data.stepCount;
+                rst.direction = chanceObj.data.direction;
             }
-        }else if (actName == UserAction.cancel) {
+
+
+        } else if (actName == UserAction.cancel) {
             if (!data) {
                 this.cancelActionList = [UserAction.all];
             } else {
                 this.cancelActionList = [data.actionName];
             }
             // us.status = UserStatus.endRound;
-        } 
+        }
         return rst;
     };
+
+
+    handler._parseChance = function(chance) {
+        var dict = {};
+        var us = this.currUser;
+        dict['move'] = function(data) {
+            us.index += (data.direction ? 1 : -1) * data.stepCount;
+        };
+
+        dict[chance.type].bind(this)(chance.data);
+    };
+
+
+
+    // 单例
     var ins = null;
     var getLogic = function() {
         if (!ins) {
