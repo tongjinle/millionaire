@@ -57,27 +57,6 @@
 			this.menu.toggle(false);
 			next && next();
 		};
-		dict['buy'] = function(data, next) {
-			this.lg.act('buy');
-
-			// 玩家扣钱 
-			var currUser = this.lg.currUser;
-			console.log(currUser);
-			var usInfo = _.find(this.userInfoList, function(usInfo) {
-				return usInfo.name == currUser.name;
-			});
-			usInfo.setMoney(currUser.money);
-
-			// 地皮打上标记
-			var lgGround = this.lg.boxList[currUser.index];
-			var ground = _.find(this.boxList, function(bo) {
-				return bo.name == lgGround.name;
-			});
-			ground.setOwnerLogo(currUser.name);
-
-			this.menu.toggle(false);
-			next && next();
-		};
 		dict['pay'] = function(data, next) {
 			var rst = this.lg.act(UserAction.pay);
 			var currUser = this.lg.currUser;
