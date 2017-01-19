@@ -390,13 +390,13 @@ var GameScene = cc.Scene.extend({
     },
     createChance: function() {
 
-        var chance = new cc.Sprite();
-        var s1 = new cc.Sprite.create("chance.jpg");
-        s1.setScale(0.2);
-        chance.x = 285;
-        chance.y = 400;
-        chance.addChild(s1);
-        this.addChild(chance);
+        // var chance = new cc.Sprite();
+        // var s1 = new cc.Sprite.create("chance.jpg");
+        // s1.setScale(0.2);
+        // chance.x = 285;
+        // chance.y = 400;
+        // chance.addChild(s1);
+        // this.addChild(chance);
         var chanceBox = new cc.Sprite();
         chanceBox.x = 200;
         chanceBox.y = 260;
@@ -446,7 +446,7 @@ var GameScene = cc.Scene.extend({
         //}, this);
 
 
-        return chance;
+        return chanceBox;
     },
     createDice: function() {
         var dice = this.dice = new Dice();
