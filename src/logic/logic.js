@@ -267,9 +267,13 @@
         } else if (actName == UserAction.build) {
             let box = this.boxList[us.index];
             us.money -= box.buildPrice();
+            var pay=box.pay();
             if (box.canBuild()) {
                 box.level++;
-            }
+            };
+            rst={
+                pay:pay
+            };
             us.status = UserStatus.endRound;
         } else if (actName == UserAction.chance) {
             var chanceOpt = CONFIG.chances[ Math.ceil(Math.random() * CONFIG.chances.length - 1)];

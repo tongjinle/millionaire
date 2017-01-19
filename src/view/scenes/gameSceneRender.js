@@ -37,8 +37,7 @@
 
 		// 购买ground
 		dict['buy'] = function(data, next) {
-			this.lg.act('buy');
-
+			var rst =this.lg.act('buy');
 			// 玩家扣钱 
 			var currUser = this.lg.currUser;
 			console.log(currUser);
@@ -81,7 +80,8 @@
 
 		dict['build'] = function(data, next) {
 			// 更改usInfo信息价格
-			this.lg.act('build');
+			var rst= this.lg.act('build');
+			console.log(rst.pay);
 			var currUser = this.lg.currUser;
 			usInfo = _.find(this.userInfoList, function(usInfo) {
 				return usInfo.name == currUser.name;
@@ -93,8 +93,9 @@
 				return bo.name == lgGround.name;
 			});
 			//调用一个函数
-			ground.setHousebuild(lgGround.level),
-
+			var pay=rst.pay;
+			ground.setHousebuild(lgGround.level);
+			ground.updatePrice(rst.pay);
 				this.menu.toggle(false);
 			next && next();
 		};
@@ -106,7 +107,7 @@
 			var dict = {};
 			dict['move'] = function(data) {
 				var startIndex = data.preIndex;
-				var stepCount = data.stepCount * (data.direction == 1 ? 1 : -1);
+				var stepCount = data.stepCount*(data.direction==1?1:-1);
 
 				var arr = [];
 

@@ -48,7 +48,7 @@ var GroundBox = cc.Sprite.extend({
         this.price=pay;
         console.log(this.price);
         this.txt_money.string= Math.floor(pay);
-
+        this.txt_money.string.color = cc.color(0, 0, 0);
     }, 
     _createBg: function(groupcolor,pay) {
         var dn = new cc.DrawNode();
