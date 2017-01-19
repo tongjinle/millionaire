@@ -11,7 +11,7 @@
 
 
     // 玩家初始money
-    config.USER_MONEY = 4000;
+    config.USER_MONEY = 1000;
     config.USER_SPEED = 50;
 
     // 税率
@@ -32,6 +32,10 @@
     // 机器人buy的警戒money值
     config.AI.BUY_TERMINAL = 2000;
     // 机器人buy的冒险几率
-    config.AI.BUY_RACE_RATE = 30;
+    config.AI.BUY_RACE_RATE = .3;
+    // 机器人buy的警戒money值
+    config.AI.BUIlD_TERMINAL = 1500;
+    // 机器人buy的冒险几率
+    config.AI.BUILD_RACE_RATE = .4;
 
 }).call(this);
