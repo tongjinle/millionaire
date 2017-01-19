@@ -81,7 +81,7 @@
 
 		dict['build'] = function(data, next) {
 			// 更改usInfo信息价格
-			this.lg.act('build');
+			var rst = this.lg.act('build');
 			var currUser = this.lg.currUser;
 			usInfo = _.find(this.userInfoList, function(usInfo) {
 				return usInfo.name == currUser.name;
@@ -94,7 +94,7 @@
 			});
 			//调用一个函数
 			ground.setHousebuild(lgGround.level),
-
+            ground.updatePrice(rst.pay),
 				this.menu.toggle(false);
 			next && next();
 		};
