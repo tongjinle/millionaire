@@ -33,7 +33,6 @@
 				usInfo.setMoney(currUser.money);
 			}.bind(this));
 			
-
 			async.series(arr, function(err, data) {
 				console.log('ani list complete');
 				next && next();

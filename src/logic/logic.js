@@ -147,11 +147,8 @@
         }
     };
     // 获取随机点数
-<<<<<<< HEAD
+
     var diceNumList = [4, 40, 5, 40];
-=======
-    var diceNumList = [7, 40, 40];
->>>>>>> 4106e52102cd69f8318c6bc1c2ee29ed6a69dc36
     var diceIndex = 0;
     handler.getDiceNum = function() {
         var len = this.userList.length;
@@ -160,11 +157,7 @@
             diceIndex = (diceIndex + 1) % diceNumList.length;
             return diceNum;
         }
-<<<<<<< HEAD
         return 2;
-=======
-        return 7;
->>>>>>> 4106e52102cd69f8318c6bc1c2ee29ed6a69dc36
         return Math.ceil(Math.random() * 6);
     };
 
