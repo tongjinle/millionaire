@@ -25,7 +25,17 @@
 				this.move(ch, startIndex, diceNum, cb);
 			}.bind(this));
 
-
+			if(rst.startPointReward){
+				arr.push(function(cb){
+					var currUser = this.lg.currUser;
+					var usInfo = _.find(this.userInfoList, function(usInfo) {
+						return usInfo.name == currUser.name;
+					});
+					usInfo.setMoney(currUser.money);
+					cb();
+				}.bind(this));
+			}
+			
 			async.series(arr, function(err, data) {
 				console.log('ani list complete');
 				next && next();
@@ -37,7 +47,8 @@
 
 		// 购买ground
 		dict['buy'] = function(data, next) {
-			var rst =this.lg.act('buy');
+			this.lg.act('buy');
+
 			// 玩家扣钱 
 			var currUser = this.lg.currUser;
 			console.log(currUser);
@@ -80,8 +91,7 @@
 
 		dict['build'] = function(data, next) {
 			// 更改usInfo信息价格
-			var rst= this.lg.act('build');
-			console.log(rst.pay);
+			var rst = this.lg.act('build');
 			var currUser = this.lg.currUser;
 			usInfo = _.find(this.userInfoList, function(usInfo) {
 				return usInfo.name == currUser.name;
@@ -93,9 +103,8 @@
 				return bo.name == lgGround.name;
 			});
 			//调用一个函数
-			var pay=rst.pay;
-			ground.setHousebuild(lgGround.level);
-			ground.updatePrice(rst.pay);
+			ground.setHousebuild(lgGround.level),
+            ground.updatePrice(rst.pay),
 				this.menu.toggle(false);
 			next && next();
 		};
@@ -107,7 +116,7 @@
 			var dict = {};
 			dict['move'] = function(data) {
 				var startIndex = data.preIndex;
-				var stepCount = data.stepCount*(data.direction==1?1:-1);
+				var stepCount = data.stepCount * (data.direction == 1 ? 1 : -1);
 
 				var arr = [];
 
@@ -119,6 +128,14 @@
 					});
 					this.move(ch, startIndex, stepCount, cb);
 				}.bind(this));
+
+				if(data.startPointReward){
+					var currUser = this.lg.currUser;
+					var usInfo = _.find(this.userInfoList, function(usInfo) {
+					return usInfo.name == currUser.name;
+					});
+					usInfo.setMoney(currUser.money);
+				}
 
 
 				async.series(arr, function(err, data) {
