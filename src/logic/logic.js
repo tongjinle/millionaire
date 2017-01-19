@@ -280,6 +280,10 @@
             if (box.canBuild()) {
                 box.level++;
             }
+            var pay=box.pay();
+            rst={
+                pay:pay
+            }
             us.status = UserStatus.endRound;
         } else if (actName == UserAction.chance) {
             var chanceOpt = CONFIG.chances[ Math.ceil(Math.random() * CONFIG.chances.length - 1)];
