@@ -7,8 +7,11 @@
         "node_modules/async/dist/async.js",
         "node_modules/underscore/underscore.js",
 
-        "src/gameScene.js",
+        
+
+        "src/util.js",
         "src/config.js",
+        "src/chanceConfig.js",
         "src/res.js",
         "src/logic/mapData.js",
         "src/logic/logic.js",
@@ -27,21 +30,25 @@
         "src/logic/boxes/tax.js",
         "src/logic/boxes/ground.js",
 
-        "src/aniMgr.js",
-        "src/menu.js",
-        "src/userinfo.js",
-        "src/dice.js",
-        "src/gameScene.js",
-        "src/config.js",
-        "src/chess.js",
-        "src/groundBox.js",
-        "src/hospitalBox.js",
-        "src/taxBox.js",
-        "src/trainBox.js",
-        "src/jailBox.js",
-        "src/hotelBox.js",
-        "src/startPointBox.js",
-        "src/chanceBox.js"
+        "src/view/scenes/gameSceneRender.js",
+        "src/view/scenes/gameSceneAi.js",
+        "src/view/scenes/gameSceneParseAction.js",
+        "src/view/scenes/gameScene.js",
+
+        "src/view/aniMgr.js",
+        "src/view/menu.js",
+        "src/view/userinfo.js",
+        "src/view/dice.js",
+        "src/view/chess.js",
+
+        "src/view/boxes/groundBox.js",
+        "src/view/boxes/hospitalBox.js",
+        "src/view/boxes/taxBox.js",
+        "src/view/boxes/trainBox.js",
+        "src/view/boxes/jailBox.js",
+        "src/view/boxes/hotelBox.js",
+        "src/view/boxes/startPointBox.js",
+        "src/view/boxes/chanceBox.js"
 
     ]
 }

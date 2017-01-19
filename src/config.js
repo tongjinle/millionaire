@@ -1,34 +1,37 @@
-var CONFIG={
-	BIGBOX_SIZE:120,
-	SMALLBOX_SIZE:60,
+(function() {
+    var config = this.CONFIG = this.CONFIG || {};
+
+    config.BIGBOX_SIZE = 120;
+    config.SMALLBOX_SIZE = 60;
 
 
 
     // 电脑随机名字
-    COMPUTERNAME_LIST:['tom','jack','alphaGo','DEEPZEN'],
+    config.COMPUTERNAME_LIST = ['tom', 'jack', 'alphaGo', 'DEEPZEN'];
 
 
     // 玩家初始money
-    USER_MONEY:4000,
-    USER_SPEED:50,
+    config.USER_MONEY = 4000;
+    config.USER_SPEED = 50;
 
     // 税率
-    TAX_RATE:.2,
+    config.TAX_RATE = .2;
 
     // ground
-    GROUND_MAX_LEVEL:4,
+    config.GROUND_MAX_LEVEL = 5;
 
 
     // startPoint的奖励
-    STARTPOINT_REWARD:2000,
+    config.STARTPOINT_REWARD = 2000;
 
 
 
     // AI
-    AI:{
-        // 机器人buy的警戒money值
-        BUY_TERMINAL:2000,
-        // 机器人buy的冒险几率
-        BUY_RACE_RATE:.3
-    }
-};
+    config.AI = {};
+
+    // 机器人buy的警戒money值
+    config.AI.BUY_TERMINAL = 2000;
+    // 机器人buy的冒险几率
+    config.AI.BUY_RACE_RATE = 30;
+
+}).call(this);
