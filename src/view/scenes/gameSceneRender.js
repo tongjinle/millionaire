@@ -142,6 +142,13 @@
 					next && next();
 				}.bind(this));
 			};
+			dict['money']= function(data){
+				var currUser = this.lg.currUser;
+				var usInfo = _.find(this.userInfoList, function(usInfo) {
+					return usInfo.name == currUser.name;
+					});
+				usInfo.setMoney(currUser.money);
+			}
 
 			dict[rst.type].bind(this)(rst);
 		};

@@ -149,7 +149,7 @@
     // 获取随机点数
 
     var diceNumList = [4, 40, 5, 40];
-    var diceNumList = [2, 35, 10, 1];
+    var diceNumList = [7, 10, 10, 1];
     var diceIndex = 0;
     handler.getDiceNum = function() {
         var len = this.userList.length;
@@ -286,6 +286,7 @@
             }
             us.status = UserStatus.endRound;
         } else if (actName == UserAction.chance) {
+            console.log(CONFIG.chances);
             var chanceOpt = CONFIG.chances[ Math.ceil(Math.random() * CONFIG.chances.length - 1)];
             var preIndex = us.index;
             chanceObj = {
@@ -304,8 +305,6 @@
                 rst.direction = chanceObj.data.direction;
                 rst.startPointReward = parseInfo.startPointReward;
             }
-
-
         } else if (actName == UserAction.cancel) {
             if (!data) {
                 this.cancelActionList = [UserAction.all];
@@ -336,6 +335,9 @@
             }
             return rst;
         };
+        dict['money'] = function(data){
+            us.money+=(data.isGive ? 1: -1)*data.money;
+        }
 
         return dict[chance.type].bind(this)(chance.data);
     };

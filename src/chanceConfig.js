@@ -21,18 +21,18 @@
 			}
 		},
 		// 停留或则再一次行动
-		{
-			type: 'round',
-			getData: function() {
-				var count = 1;
-				var isStop = util.randomInList([0,1]);
-				return {
-					count: count,
-					// 0是停留 1是再得一次dice的机会
-					isStop: isStop
-				};
-			}
-		},
+		// {
+		// 	type: 'round',
+		// 	getData: function() {
+		// 		var count = 1;
+		// 		var isStop = util.randomInList([0,1]);
+		// 		return {
+		// 			count: count,
+		// 			// 0是停留 1是再得一次dice的机会
+		// 			isStop: isStop
+		// 		};
+		// 	}
+		// },
 		{
 			type:'money',
 			getData:function(){
@@ -44,6 +44,6 @@
 				};
 			}
 		}
-	].slice(0,1);
+	].slice(1,2);
 
 }).call(this);
