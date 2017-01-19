@@ -4,7 +4,7 @@ var GroundBox = cc.Sprite.extend({
 
         this.name = name;
         this.cityname = cityname;
-        this.price = price;
+        this.price = 0;
         this.group = group;
 
         this.width = CONFIG.SMALLBOX_SIZE;
@@ -13,6 +13,9 @@ var GroundBox = cc.Sprite.extend({
         this._createBg(groupcolor);
         this._createOwnerLogo();
         this._createHousebuild();
+        this._createMoney();
+        this.updatePrice(price);
+
     },
     setOwnerLogo:function(name){
         this.ownerLogo.texture = "chess_"+name+".png";
@@ -34,13 +37,20 @@ var GroundBox = cc.Sprite.extend({
         var s = this.housebuild = new cc.Sprite();
         s.width = 50;
         s.height = 50;
-        s.setScaleX(.6);
-        s.setScaleY(.6);
+        s.setScaleX(.5);
+        s.setScaleY(.5);
         s.x = this.width / 2;
-        s.y = this.height / 2;
+        s.y = this.height / 3.8;
         this.addChild(s);
-    },    
-    _createBg: function(groupcolor) {
+    }, 
+    updatePrice:function(pay) {
+    
+        this.price=pay;
+        console.log(this.price);
+        this.txt_money.string= Math.floor(pay);
+
+    }, 
+    _createBg: function(groupcolor,pay) {
         var dn = new cc.DrawNode();
         var ltp = cc.p(0, 20);
         var rbp = cc.p(60, 0);
@@ -61,13 +71,30 @@ var GroundBox = cc.Sprite.extend({
         var txt = new cc.LabelTTF('' + this.cityname + '', '', 18);
         txt.color = cc.color(0, 0, 0);
         txt.x = this.width / 2;
-        txt.y = this.height / 1.8;
+        txt.y = this.height / 1.35;
         this.addChild(txt);
 
-        var pricetxt = new cc.LabelTTF('' + this.price + '', '', 18);
+        // var pricetxt = new cc.LabelTTF('' + this.price+ '', '', 18);
+        // pricetxt.color = cc.color(255, 0, 0);
+        // pricetxt.x = this.width / 2;
+        // pricetxt.y = this.height / 1.7;
+        // this.addChild(pricetxt);
+    },
+    _createMoney: function() {
+        // var txt_money = this.txt_money = new cc.LabelTTF('', '', 14);
+        // txt_money.color = cc.color(255, 255, 255);
+        // txt_money.x = 100;
+        // txt_money.y = 25;
+        // this.addChild(txt_money);
+
+        var pricetxt = this.txt_money=new cc.LabelTTF('', '', 18);
         pricetxt.color = cc.color(255, 0, 0);
         pricetxt.x = this.width / 2;
-        pricetxt.y = this.height / 2.6;
+        pricetxt.y = this.height / 1.7;
         this.addChild(pricetxt);
+
     }
+
+
+
 });
