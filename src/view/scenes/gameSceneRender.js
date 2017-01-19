@@ -25,13 +25,16 @@
 				this.move(ch, startIndex, diceNum, cb);
 			}.bind(this));
 
-			arr.push(function(cb) {
-				var currUser = this.lg.currUser;
-				var usInfo = _.find(this.userInfoList, function(usInfo) {
-				return usInfo.name == currUser.name;
-				});
-				usInfo.setMoney(currUser.money);
-			}.bind(this));
+			if(rst.startPointReward){
+				arr.push(function(cb){
+					var currUser = this.lg.currUser;
+					var usInfo = _.find(this.userInfoList, function(usInfo) {
+						return usInfo.name == currUser.name;
+					});
+					usInfo.setMoney(currUser.money);
+					cb();
+				}.bind(this));
+			}
 			
 			async.series(arr, function(err, data) {
 				console.log('ani list complete');
@@ -125,6 +128,14 @@
 					});
 					this.move(ch, startIndex, stepCount, cb);
 				}.bind(this));
+
+				if(data.startPointReward){
+					var currUser = this.lg.currUser;
+					var usInfo = _.find(this.userInfoList, function(usInfo) {
+					return usInfo.name == currUser.name;
+					});
+					usInfo.setMoney(currUser.money);
+				}
 
 
 				async.series(arr, function(err, data) {

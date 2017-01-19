@@ -261,7 +261,10 @@ var GameScene = cc.Scene.extend({
             return cc.moveTo(CONFIG.USER_SPEED / 1000, cc.p(posi));
 
         });
-        moveActList.push(cc.callFunc(next));
+        moveActList.push(cc.callFunc(function(){
+            console.log('move compelete');
+            next();
+        }));
         console.log(posiList);
         ch.runAction(cc.sequence(moveActList));
     }

@@ -149,6 +149,7 @@
     // 获取随机点数
 
     var diceNumList = [4, 40, 5, 40];
+    var diceNumList = [2, 35, 10, 1];
     var diceIndex = 0;
     handler.getDiceNum = function() {
         var len = this.userList.length;
@@ -207,16 +208,19 @@
         if (actName == UserAction.dice) {
             var preIndex = us.index;
             var diceNum = this.getDiceNum();
-            if(preIndex+diceNum>=mapData.length){
-                us.money+=CONFIG.STARTPOINT_REWARD
 
-            }
             rst = {
                 preIndex: preIndex,
                 diceNum: diceNum
             };
 
             us.index = (us.index + diceNum) % mapData.length;
+
+            if(this._checkStartPoint(preIndex,us.index)){
+                rst.startPointReward = CONFIG.STARTPOINT_REWARD;
+                us.money+=CONFIG.STARTPOINT_REWARD;
+            }
+
             us.status = UserStatus.afterDice;
         } else if (actName == UserAction.buy) {
             let box = this.boxList[us.index];
@@ -284,16 +288,17 @@
                 type: chanceOpt.type,
                 data: chanceOpt.getData()
             };
-            this._parseChance(chanceObj);
+            var parseInfo = this._parseChance(chanceObj);
 
             rst = {
                 type:chanceObj.type,
             };
 
             if(rst.type == 'move'){
-                rst.preIndex = preIndex;;
+                rst.preIndex = preIndex;
                 rst.stepCount = chanceObj.data.stepCount;
                 rst.direction = chanceObj.data.direction;
+                rst.startPointReward = parseInfo.startPointReward;
             }
 
 
@@ -308,16 +313,30 @@
         return rst;
     };
 
+    handler._checkStartPoint= function(preIndex,currIndex){
+        return preIndex>currIndex;
+    };
+
 
     handler._parseChance = function(chance) {
         var dict = {};
         var us = this.currUser;
         dict['move'] = function(data) {
-            us.index += (data.direction ? 1 : -1) * data.stepCount;
+            var rst = {};
+            var preIndex = us.index;
+            us.index = (us.index+ (data.direction ? 1 : -1) * data.stepCount + this.boxList.length)%this.boxList.length;
+            var currIndex = us.index;
+            if(this._checkStartPoint(preIndex,currIndex)){
+                us.money+=CONFIG.STARTPOINT_REWARD;
+                rst. startPointReward=CONFIG.STARTPOINT_REWARD; 
+            }
+            return rst;
         };
 
-        dict[chance.type].bind(this)(chance.data);
+        return dict[chance.type].bind(this)(chance.data);
     };
+
+    // handler._m
 
 
 

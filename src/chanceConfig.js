@@ -9,8 +9,8 @@
 			getData: function() {
 				// var interval = [1, 3];
 				// var dires = [0, 1];
-				var interval = [1];
-				var dires = [0];
+				var interval = [5];
+				var dires = [1];
 				var stepCount = util.randomInList(interval);
 				// 1是前进 0是后退
 				var direction = util.randomInList(dires);
