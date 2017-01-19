@@ -127,7 +127,7 @@
 			var dict = {};
 			dict['move'] = function(data) {
 				var startIndex = data.preIndex;
-				var stepCount = data.stepCount*(data.direction==1?1:-1);
+				var stepCount = data.stepCount * (data.direction == 1 ? 1 : -1);
 
 				var arr = [];
 

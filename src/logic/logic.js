@@ -129,13 +129,25 @@
                 actName: 'pay'
             };
         } else if (actionList.indexOf(UserAction.build) >= 0) {
-            return {
-                actName: 'build'
+            var isBuild = false;
+            if(us.money >= CONFIG.AI.BUIlD_TERMINAL) {
+                isBuild = true;
+            } else {
+                if(Math.random() <CONFIG.AI.BUILD_RACE_RATE) {
+                    isBuild = true;
+                }
             }
+            return isBuild ? {
+                actName: 'build'
+            } :null;
+        } else if (actionList.indexOf(UserAction.chance) >=0) {
+            return {
+                actName:'chance'
+            };
         }
     };
     // 获取随机点数
-    var diceNumList = [7, 40, 5, 40];
+    var diceNumList = [7, 40, 40];
     var diceIndex = 0;
     handler.getDiceNum = function() {
         var len = this.userList.length;
@@ -144,7 +156,7 @@
             diceIndex = (diceIndex + 1) % diceNumList.length;
             return diceNum;
         }
-        return 4;
+        return 7;
         return Math.ceil(Math.random() * 6);
     };
 

@@ -20,7 +20,7 @@
                 this.accept('pay');
             } else if (aiAct.actName == 'build') {
                 this.accept('build');
-            } else if (aiAct.actName == 'chance' ) {
+            } else if (aiAct.actName == 'chance'){
                 this.accept('chance');
             }
         }.bind(this), delay);
