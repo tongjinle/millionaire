@@ -258,7 +258,6 @@
             us.status = UserStatus.endRound; 
         }else if(actName == UserAction.chance){
             var randomNum=Math.ceil(Math.random()*chanceBox.length-1);
-            us.index +=chanceBox[randomNum].step;
             rst ={
                 type:chanceBox[randomNum].type,
                 step:chanceBox[randomNum].step
