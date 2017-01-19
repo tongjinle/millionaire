@@ -15,7 +15,7 @@ var GameScene = cc.Scene.extend({
         this.createGameMap(mapData, mapColorData);
         this.createDice();
         this.createChessList();
-        // this.createChance();  
+         this.createChance();
         this.createMenu();
         this.createUserInfo();
         // this.chess=new Chess();
@@ -393,42 +393,57 @@ var GameScene = cc.Scene.extend({
         var chance = new cc.Sprite();
         var s1 = new cc.Sprite.create("chance.jpg");
         s1.setScale(0.2);
-        chance.x = 250;
+        chance.x = 285;
         chance.y = 400;
         chance.addChild(s1);
         this.addChild(chance);
+        var chanceBox = new cc.Sprite();
+        chanceBox.x = 200;
+        chanceBox.y = 260;
+        var dn = new cc.DrawNode();
+        var ltp = cc.p(0, 200);
+        var rbp = cc.p(200, 0);
+        dn.drawRect(ltp, rbp, cc.color(164, 35, 25, 150));
+        chanceBox.addChild(dn);
+        var txt = new cc.LabelTTF('前进三步', '', 30);
+        txt.color = cc.color(255, 255, 255);
+        txt.x = 100;
+        txt.y = 100;
+        dn.addChild(txt);
 
-        var self = this;
-        cc.eventManager.addListener({
-            event: cc.EventListener.MOUSE,
-            onMouseDown: function(event) {
-                var pos = event.getLocation();
+        this.addChild(chanceBox);
 
-                if (self.checkChancePos(pos)) {
-
-                    var chanceBox = new cc.Sprite();
-                    chanceBox.x = 160;
-                    chanceBox.y = 300;
-                    var dn = new cc.DrawNode();
-                    var ltp = cc.p(0, 200);
-                    var rbp = cc.p(200, 0);
-                    dn.drawRect(ltp, rbp, cc.color(164, 35, 25, 150));
-                    chanceBox.addChild(dn);
-                    var txt = new cc.LabelTTF('前进三步', '', 30);
-                    txt.color = cc.color(255, 255, 255);
-                    txt.x = 100;
-                    txt.y = 100;
-                    dn.addChild(txt);
-
-                    self.addChild(chanceBox);
-
-                    self.schedule(function() {
-                        chanceBox.setVisible(false);
-                    }, 2, 1, 0);
-
-                }
-            }
-        }, this);
+        //var self = this;
+        //cc.eventManager.addListener({
+        //    event: cc.EventListener.MOUSE,
+        //    onMouseDown: function(event) {
+        //        var pos = event.getLocation();
+        //
+        //        if (self.checkChancePos(pos)) {
+        //
+        //            var chanceBox = new cc.Sprite();
+        //            chanceBox.x = 160;
+        //            chanceBox.y = 300;
+        //            var dn = new cc.DrawNode();
+        //            var ltp = cc.p(0, 200);
+        //            var rbp = cc.p(200, 0);
+        //            dn.drawRect(ltp, rbp, cc.color(164, 35, 25, 150));
+        //            chanceBox.addChild(dn);
+        //            var txt = new cc.LabelTTF('前进三步', '', 30);
+        //            txt.color = cc.color(255, 255, 255);
+        //            txt.x = 100;
+        //            txt.y = 100;
+        //            dn.addChild(txt);
+        //
+        //            self.addChild(chanceBox);
+        //
+        //            self.schedule(function() {
+        //                chanceBox.setVisible(false);
+        //            }, 2, 1, 0);
+        //
+        //        }
+        //    }
+        //}, this);
 
 
         return chance;
