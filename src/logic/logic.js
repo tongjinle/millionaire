@@ -150,6 +150,7 @@
 
     var diceNumList = [4, 40, 5, 40];
     var diceNumList = [7, 10, 10, 1];
+    var diceNumList = [3,40,4, 10, 10, 1];
     var diceIndex = 0;
     handler.getDiceNum = function() {
         var len = this.userList.length;
@@ -286,7 +287,6 @@
             }
             us.status = UserStatus.endRound;
         } else if (actName == UserAction.chance) {
-            console.log(CONFIG.chances);
             var chanceOpt = CONFIG.chances[ Math.ceil(Math.random() * CONFIG.chances.length - 1)];
             var preIndex = us.index;
             chanceObj = {
@@ -305,6 +305,13 @@
                 rst.direction = chanceObj.data.direction;
                 rst.startPointReward = parseInfo.startPointReward;
             }
+
+            // 破产检测
+            if(rst.type == 'money'){
+                rst.isDead = parseInfo.isDead;
+                rst.clearBoxIndexList = parseInfo.clearBoxIndexList;
+            }
+
         } else if (actName == UserAction.cancel) {
             if (!data) {
                 this.cancelActionList = [UserAction.all];
@@ -319,6 +326,41 @@
     handler._checkStartPoint= function(preIndex,currIndex){
         return preIndex>currIndex;
     };
+
+    // 玩家收支(money是变化值)
+    // 返回值对象的isDead为true,则表示已经破产
+    // 对象的描述是对破产玩家的清算
+    // 对象格式
+    /*
+        {
+            isDead:boolean;
+            boxIndexList:number[];
+        }
+    */
+    handler._calUserMoney = function(user,money){
+        user.money += money;
+
+
+        user.money = Math.max(user.money,0);
+        if(user.money<=0){
+            var boxIndexList =[];
+            // 统计破产玩家的所有资产
+            this.boxList.forEach(function(bo,i){
+                if(bo.owner && bo.owner == user){
+                    boxIndexList.push(i);
+                }
+            });
+            // 清空资产
+            boxIndexList.forEach(function(boIndex){
+                this.boxList[boIndex].owner = undefined;
+            }.bind(this));
+            return {isDead:true,boxIndexList:boxIndexList}; 
+        }
+        return {isDead:false};
+    };
+
+
+    // 清空
 
 
     handler._parseChance = function(chance) {
@@ -336,7 +378,15 @@
             return rst;
         };
         dict['money'] = function(data){
-            us.money+=(data.isGive ? 1: -1)*data.money;
+            var rst = {};
+            var deltaMoney = (data.isGive ? 1: -1)*data.money;
+            var calMoneyInfo = this._calUserMoney(us,deltaMoney);
+
+            if(calMoneyInfo){
+                rst.isDead = calMoneyInfo.isDead;
+                rst.clearBoxIndexList = calMoneyInfo.boxIndexList;
+            }
+            return rst;
         }
 
         return dict[chance.type].bind(this)(chance.data);

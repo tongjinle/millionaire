@@ -17,8 +17,11 @@ var GroundBox = cc.Sprite.extend({
         this.updatePrice(price);
 
     },
+    // name不为真,则隐藏
     setOwnerLogo:function(name){
+        this.ownerLogo.visible = !!name;
         this.ownerLogo.texture = "chess_"+name+".png";
+        window.logo1 = this.ownerLogo;
     },
     _createOwnerLogo:function(){
         var s = this.ownerLogo = new cc.Sprite();
@@ -30,8 +33,10 @@ var GroundBox = cc.Sprite.extend({
         s.y = this.height / 2 + s.height;
         this.addChild(s);
     },
+    // level不为真,则隐藏
     setHousebuild:function(level){
-        this.housebuild.texture = "home"+level+".png";
+        this.housebuild.visible=!!level;
+        this.housebuild.texture ="home"+level+".png";
     },
     _createHousebuild:function(){
         var s = this.housebuild = new cc.Sprite();
@@ -46,7 +51,7 @@ var GroundBox = cc.Sprite.extend({
     updatePrice:function(pay) {
     
         this.price=pay;
-        console.log(this.price);
+        // console.log(this.price);
         this.txt_money.string= Math.floor(pay);
         this.txt_money.string.color = cc.color(0, 0, 0);
     }, 
@@ -92,6 +97,14 @@ var GroundBox = cc.Sprite.extend({
         pricetxt.x = this.width / 2;
         pricetxt.y = this.height / 1.7;
         this.addChild(pricetxt);
+
+    },
+    // 重置
+    // 比如玩家破产的时候,地产会被清空
+    reset:function(){
+
+        this.setOwnerLogo(null);
+        this.setHousebuild(null);
 
     }
 

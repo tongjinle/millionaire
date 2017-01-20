@@ -18,15 +18,15 @@
 
 			// 棋子移动的动画
 			arr.push(function(cb) {
-				let us = this.currUser;
+				var us = this.currUser;
 				var ch = this.chessList.find(function(ch) {
 					return ch.name == us.name;
 				});
 				this.move(ch, startIndex, diceNum, cb);
 			}.bind(this));
 
-			if(rst.startPointReward){
-				arr.push(function(cb){
+			if (rst.startPointReward) {
+				arr.push(function(cb) {
 					var currUser = this.lg.currUser;
 					var usInfo = _.find(this.userInfoList, function(usInfo) {
 						return usInfo.name == currUser.name;
@@ -35,7 +35,7 @@
 					cb();
 				}.bind(this));
 			}
-			
+
 			async.series(arr, function(err, data) {
 				console.log('ani list complete');
 				next && next();
@@ -104,7 +104,7 @@
 			});
 			//调用一个函数
 			ground.setHousebuild(lgGround.level),
-            ground.updatePrice(rst.pay),
+				ground.updatePrice(rst.pay),
 				this.menu.toggle(false);
 			next && next();
 		};
@@ -122,17 +122,17 @@
 
 				// 棋子移动的动画
 				arr.push(function(cb) {
-					let us = this.currUser;
+					var us = this.currUser;
 					var ch = this.chessList.find(function(ch) {
 						return ch.name == us.name;
 					});
 					this.move(ch, startIndex, stepCount, cb);
 				}.bind(this));
 
-				if(data.startPointReward){
+				if (data.startPointReward) {
 					var currUser = this.lg.currUser;
 					var usInfo = _.find(this.userInfoList, function(usInfo) {
-					return usInfo.name == currUser.name;
+						return usInfo.name == currUser.name;
 					});
 					usInfo.setMoney(currUser.money);
 				}
@@ -142,12 +142,38 @@
 					next && next();
 				}.bind(this));
 			};
-			dict['money']= function(data){
+			dict['money'] = function(data) {
 				var currUser = this.lg.currUser;
 				var usInfo = _.find(this.userInfoList, function(usInfo) {
 					return usInfo.name == currUser.name;
-					});
+				});
 				usInfo.setMoney(currUser.money);
+
+				// 破产
+				if(data.isDead){
+					dict['userGameover'].bind(this)({username:currUser.name,clearBoxIndexList:data.clearBoxIndexList});
+				}
+
+				console.log(data);
+			};
+
+			dict['userGameover'] = function(data){
+				var username = data.username;
+				var clearBoxIndexList = data.clearBoxIndexList;
+
+				// 看板
+				var usInfo = _.find(this.userInfoList, function(usInfo) {
+					return usInfo.name == username;
+				});
+
+				usInfo.gameover();
+
+				// box
+				clearBoxIndexList.forEach(function(boIndex){
+					var bo = this.boxList[boIndex];
+					bo.reset();
+				}.bind(this));
+
 			}
 
 			dict[rst.type].bind(this)(rst);

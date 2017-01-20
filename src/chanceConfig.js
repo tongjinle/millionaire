@@ -36,8 +36,11 @@
 		{
 			type:'money',
 			getData:function(){
-				var money = util.randomInList([500,1000,2000]);;
-				var isGive = util.randomInList([0,1]);
+				// var money = util.randomInList([500,1000,2000]);;
+				// var isGive = util.randomInList([0,1]);
+				var money = util.randomInList([2000]);;
+				// var money = util.randomInList([500]);;
+				var isGive = util.randomInList([0]);
 				return{
 					money:money,
 					isGive:isGive

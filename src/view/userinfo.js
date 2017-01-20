@@ -18,12 +18,15 @@ var UserInfo = cc.Sprite.extend({
         this.txt_money.string = '　　　' + Math.floor(money) + '　元';
     },
     _createBg: function(color) {
-        var bg = new cc.DrawNode();
+        if(this._bg){
+            this.removeChild(this._bg);
+        }
+        var bg = this._bg = new cc.DrawNode();
         var ltp = cc.p(0, this.height);
         var rbp = cc.p(this.width , 0);
         bg.drawRect(ltp, rbp, color);
         console.log('bg:',bg.x,bg.y,bg.anchorX,bg.anchorY)
-        this.addChild(bg);
+        this.addChild(bg,0);
     },
 
     _createUserName: function(username) {
@@ -35,16 +38,21 @@ var UserInfo = cc.Sprite.extend({
         txt_name.x = 120;
         txt_name.y = 50;
 
-        this.addChild(txt_title);
-        this.addChild(txt_name);
+        this.addChild(txt_title,1);
+        this.addChild(txt_name,1);
     },
     _createMoney: function() {
         var txt_money = this.txt_money = new cc.LabelTTF('', '', 14);
         txt_money.color = cc.color(255, 255, 255);
         txt_money.x = 100;
         txt_money.y = 25;
-        this.addChild(txt_money);
+        this.addChild(txt_money,1);
 
+
+    },
+
+    gameover:function(){
+       this._createBg(cc.color.GRAY);
 
     }
 

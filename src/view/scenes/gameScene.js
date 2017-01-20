@@ -83,7 +83,7 @@ var GameScene = cc.Scene.extend({
 
             // 处理下一个格子的位置
             if (row == 0) {
-                console.log(posi, '**');
+                // console.log(posi, '**');
                 posi.x -= step;
             }
             if (row == 1) {
