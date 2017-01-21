@@ -164,13 +164,13 @@
 
     var diceIndex = 0;
     handler.getDiceNum = function() {
-        var len = this.userList.length;
-        if (this.currUser == this.userList[0]) {
-            var diceNum = diceNumList[diceIndex];
-            diceIndex = (diceIndex + 1) % diceNumList.length;
-            return diceNum;
-        }
-        return 1;
+        // var len = this.userList.length;
+        // if (this.currUser == this.userList[0]) {
+        //     var diceNum = diceNumList[diceIndex];
+        //     diceIndex = (diceIndex + 1) % diceNumList.length;
+        //     return diceNum;
+        // }
+        // return 2;
         return Math.ceil(Math.random() * 6);
     };
 
@@ -262,7 +262,7 @@
                     money: money
                 };
             } else if (ground.type == 'tax') {
-                var money = us.money * CONFIG.TAX_RATE;
+                var money = ground.pay(us.money);
                 rst = {
                     payType: 'tax',
                     money: money

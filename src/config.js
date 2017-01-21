@@ -15,14 +15,14 @@
     config.USER_SPEED = 50;
 
     // 税率
-    config.TAX_RATE = 1.2;
+    config.TAX_RATE = .2;
 
     // ground
     config.GROUND_MAX_LEVEL = 5;
 
 
     // startPoint的奖励
-    config.STARTPOINT_REWARD = 2000;
+    config.STARTPOINT_REWARD = 100;
 
 
 
@@ -30,11 +30,11 @@
     config.AI = {};
 
     // 机器人buy的警戒money值
-    config.AI.BUY_TERMINAL = 2000;
+    config.AI.BUY_TERMINAL = 200;
     // 机器人buy的冒险几率
     config.AI.BUY_RACE_RATE = .3;
     // 机器人buy的警戒money值
-    config.AI.BUIlD_TERMINAL = 1500;
+    config.AI.BUIlD_TERMINAL = 400;
     // 机器人buy的冒险几率
     config.AI.BUILD_RACE_RATE = .4;
 

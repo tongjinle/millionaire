@@ -5,10 +5,9 @@
 
     var handler = cls.prototype;
 
-    handler.reward = function(){
-        return CONFIG.STARTPOINT_REWARD;
+    handler.pay = function(userMoney){
+    	return userMoney * CONFIG.TAX_RATE;
     };
-
 
 
     this.Tax = cls;

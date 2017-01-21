@@ -16,7 +16,7 @@
     var handler = cls.prototype;
 
     handler.pay = function(isAll){
-        return this.price * (this.level+1) * (isAll?2:1)+10000;
+        return this.price * (this.level+1) * (isAll?2:1);
     };
 
     handler.buildPrice = function(){
