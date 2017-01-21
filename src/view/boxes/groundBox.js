@@ -20,6 +20,9 @@ var GroundBox = cc.Sprite.extend({
     // name不为真,则隐藏
     setOwnerLogo:function(name){
         this.ownerLogo.visible = !!name;
+        if(!name){
+            return;
+        }
         this.ownerLogo.texture = "chess_"+name+".png";
         window.logo1 = this.ownerLogo;
     },
@@ -36,6 +39,9 @@ var GroundBox = cc.Sprite.extend({
     // level不为真,则隐藏
     setHousebuild:function(level){
         this.housebuild.visible=!!level;
+        if(!level){
+            return;
+        }
         this.housebuild.texture ="home"+level+".png";
     },
     _createHousebuild:function(){
