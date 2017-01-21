@@ -374,6 +374,15 @@
 
             // 玩家出局
             user.isDead = true;
+            // 判断是不是已经有胜出者
+            var liverList = this.userList.filter(function(us){
+                return !us.isDead;
+            });
+            if(liverList.length==1){
+                var winner = liverList[0];
+                this.winner = winner;
+            }
+
 
             return {isDead:true,boxIndexList:boxIndexList}; 
         }

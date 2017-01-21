@@ -27,6 +27,12 @@ var GameScene = cc.Scene.extend({
     // 确定当前玩家
     round: function() {
         var lg = this.lg;
+
+        if(lg.winner){
+            alert(lg.currUser.name+' win !!');
+            return;
+        }
+
         lg.round();
         var username = lg.currUser.name;
 
