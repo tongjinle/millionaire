@@ -97,8 +97,14 @@
 
     // 返回当前可以走的玩家
     handler.round = function() {
-        this.userIndex = (this.userIndex + 1) % this.userList.length;
-        this.currUser = this.userList[this.userIndex];
+        while(1){
+            this.userIndex = (this.userIndex + 1) % this.userList.length;
+            this.currUser = this.userList[this.userIndex];
+            
+            if(!this.currUser.isDead){
+                break;
+            }
+        }
         this.currUser.status = UserStatus.beforeDice;
         this.cancelActionList = [];
         this.currActionList = this.getActionList();
@@ -151,6 +157,11 @@
     var diceNumList = [4, 40, 5, 40];
     var diceNumList = [7, 10, 10, 1];
     var diceNumList = [3,40,4, 10, 10, 1];
+    // 测试tax让人破产 == start ==
+    var diceNumList = [1,40,1, 10, 10, 1];
+    
+    // 测试tax让人破产 == end ==
+
     var diceIndex = 0;
     handler.getDiceNum = function() {
         var len = this.userList.length;
@@ -159,7 +170,7 @@
             diceIndex = (diceIndex + 1) % diceNumList.length;
             return diceNum;
         }
-        return 2;
+        return 3;
         return Math.ceil(Math.random() * 6);
     };
 
@@ -233,6 +244,7 @@
 
         } else if (actName == UserAction.pay) {
             var ground = this.boxList[us.index];
+            var money = 0 ;
             if (ground.type == 'ground') {
                 var owner = ground.owner;
                 var group = _.filter(this.boxList, function(bo) {
@@ -243,20 +255,19 @@
                 });
                 var money = ground.pay(isAll);
                 owner.money += money;
-                us.money -= money;
-                // todo 
-                // 如果us破产....
+               
                 rst = {
                     payType: 'ground',
                     ownername: owner.name,
                     money: money
                 };
             } else if (ground.type == 'tax') {
-                us.money -= us.money * CONFIG.TAX_RATE;
+                var money = us.money * CONFIG.TAX_RATE;
                 rst = {
                     payType: 'tax',
-                    money: us.money
+                    money: money
                 };
+
             } else if (ground.type == 'train') {
                 var owner = ground.owner;
                 var group = _.filter(this.boxList, function(bo) {
@@ -267,13 +278,19 @@
                 }).length;
                 var money = ground.pay(groupCount);
                 owner.money += money;
-                us.money -= money;
+
                 rst = {
                     payType: 'train',
                     ownername: owner.name,
                     money: money
                 };
             }
+            // 
+            var calMoneyInfo = this._calUserMoney(us, -money);
+            rst .isDead = calMoneyInfo.isDead;
+            rst.clearBoxIndexList = calMoneyInfo.boxIndexList;
+
+
             us.status = UserStatus.endRound;
         } else if (actName == UserAction.build) {
             var box = this.boxList[us.index];
@@ -354,6 +371,10 @@
             boxIndexList.forEach(function(boIndex){
                 this.boxList[boIndex].owner = undefined;
             }.bind(this));
+
+            // 玩家出局
+            user.isDead = true;
+
             return {isDead:true,boxIndexList:boxIndexList}; 
         }
         return {isDead:false};
@@ -381,6 +402,7 @@
             var rst = {};
             var deltaMoney = (data.isGive ? 1: -1)*data.money;
             var calMoneyInfo = this._calUserMoney(us,deltaMoney);
+
 
             if(calMoneyInfo){
                 rst.isDead = calMoneyInfo.isDead;

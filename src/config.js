@@ -15,7 +15,7 @@
     config.USER_SPEED = 50;
 
     // 税率
-    config.TAX_RATE = .2;
+    config.TAX_RATE = 1.2;
 
     // ground
     config.GROUND_MAX_LEVEL = 5;

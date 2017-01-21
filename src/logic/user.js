@@ -5,6 +5,9 @@
         this.index = 0;
         this.money = CONFIG.USER_MONEY;
         this.groundIndexList = [];
+
+
+        this.isDead = false;
     };
 
     var handler = cls.prototype;

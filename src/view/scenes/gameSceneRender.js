@@ -82,7 +82,12 @@
 				usInfo.setMoney(usInfo.money - money);
 				ownerUsInfo.setMoney(ownerUsInfo.money + money);
 			} else if (rst.payType == 'tax') {
-				usInfo.setMoney(money);
+				usInfo.setMoney(usInfo.money - money);
+			}
+
+			// 破产
+			if(rst.isDead){
+				dict['userGameover'].bind(this)({username:currUser.name,clearBoxIndexList:rst.clearBoxIndexList});
 			}
 
 			next && next();
@@ -151,34 +156,37 @@
 
 				// 破产
 				if(data.isDead){
-					dict['userGameover'].bind(this)({username:currUser.name,clearBoxIndexList:data.clearBoxIndexList});
+					userGameover.bind(this)({username:currUser.name,clearBoxIndexList:data.clearBoxIndexList});
 				}
 
 				console.log(data);
 			};
 
-			dict['userGameover'] = function(data){
-				var username = data.username;
-				var clearBoxIndexList = data.clearBoxIndexList;
-
-				// 看板
-				var usInfo = _.find(this.userInfoList, function(usInfo) {
-					return usInfo.name == username;
-				});
-
-				usInfo.gameover();
-
-				// box
-				clearBoxIndexList.forEach(function(boIndex){
-					var bo = this.boxList[boIndex];
-					bo.reset();
-				}.bind(this));
-
-			}
-
 			dict[rst.type].bind(this)(rst);
 		};
 
+
+		// 游戏出局
+		dict['userGameover'] = function(data){
+			var username = data.username;
+			var clearBoxIndexList = data.clearBoxIndexList;
+
+			// 看板
+			var usInfo = _.find(this.userInfoList, function(usInfo) {
+				return usInfo.name == username;
+			});
+
+			usInfo.gameover();
+
+			// box
+			clearBoxIndexList.forEach(function(boIndex){
+				var bo = this.boxList[boIndex];
+				bo.reset();
+			}.bind(this));
+
+		};
+
+		var userGameover = dict['userGameover'];
 
 
 		// 取消
