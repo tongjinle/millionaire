@@ -170,7 +170,7 @@
             diceIndex = (diceIndex + 1) % diceNumList.length;
             return diceNum;
         }
-        return 3;
+        return 1;
         return Math.ceil(Math.random() * 6);
     };
 
