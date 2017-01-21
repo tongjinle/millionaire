@@ -224,7 +224,7 @@
 
             us.status = UserStatus.afterDice;
         } else if (actName == UserAction.buy) {
-            let box = this.boxList[us.index];
+            var box = this.boxList[us.index];
             if (box.type == 'train') {}
             us.money -= box.price;
             box.owner = us;
@@ -276,7 +276,7 @@
             }
             us.status = UserStatus.endRound;
         } else if (actName == UserAction.build) {
-            let box = this.boxList[us.index];
+            var box = this.boxList[us.index];
             us.money -= box.buildPrice();
             if (box.canBuild()) {
                 box.level++;
